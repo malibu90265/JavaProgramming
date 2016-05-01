@@ -1,0 +1,737 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper
+ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+ "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="totalDAO">
+	<!-- 새로 만드는 계산식 -->
+	<select id="getTotalNetSalesWithoutB" parameterType="map">
+		SELECT	SUM(project.pj_year_sales) - SUM(project.pj_matl_cost) - SUM(project.pj_outsrc_cost)
+		FROM	project
+				, pj_status
+		WHERE	project.pj_status = pj_status.pj_status_id
+		AND		pj_status.pj_status_name NOT IN ("C급","종결")
+		ORDER	BY project.pj_status, pj_id
+	</select>
+
+	<select		id="getCostAndMMFromDeploy"
+				parameterType="map"
+				resultType="com.sqisoft.iqs.team.vo.CostAndMMVO">
+		SELECT	SUM(pd_mm) as totalMM, SUM(pd_uprice * pd_mm*pd_ratio/100) as totalEmpCost
+		FROM	pj_deploy
+				, human_resource
+		WHERE	human_resource.hr_name = pj_deploy.pd_name
+		AND		pj_id = #{pj_id}
+		<if test="division != null and division !=''">
+			<if test="division == '직원'">
+		AND		human_resource.hr_company LIKE '%SQI%'
+			</if>
+			<if test="division == '외주'">
+		AND		human_resource.hr_company NOT LIKE '%SQI%'
+			</if>
+		</if>
+	</select>
+
+	<update id="updateAllProject" parameterType="com.sqisoft.iqs.team.vo.TotalVO">
+
+	</update>
+
+
+	<select id="getProjectListByConditions" resultMap="projectDAO.projectResultMap">
+		SELECT	project.pj_id
+				, project.pj_name
+				, project.tm_id
+				, project.pj_status
+				, project.pj_direct
+				, project.pj_emp_mm
+				, project.pj_outEmp_mm
+				, pj_status.pj_status_name as pj_status_name
+				, project.pj_amount
+				, project.pj_start_date
+				, project.pj_end_date
+				, project.pj_year_sales
+				, project.pj_matl_cost
+				, project.pj_outsrc_cost
+				, project.pj_extra_cost
+				, project.pj_sqi_mm
+				, project.pj_out_mm
+		FROM	project
+				, pj_status
+		WHERE	project.pj_status = pj_status.pj_status_id
+		AND		pj_status.pj_status_name NOT IN ("C급", "종결")
+		<if test="tm_id != null and tm_id != ''">
+		AND		project.tm_id = #{tm_id}
+		</if>
+		ORDER	BY pj_status
+				, pj_LMD
+	</select>
+ 
+	<select id="getBudgetList" resultMap="pjBudgetDAO.pjBudgetMap">
+		SELECT	pj_id
+				, pb_no
+				, pb_date
+				, pb_start_date
+				, pb_put_num
+				, pb_sqi_mm
+				, pb_out_mm
+				, pb_sales
+				, pb_matl_cost
+				, pb_outsrc_cost
+				, pb_labor_cost
+				, pb_extra_cost
+		FROM	pj_budget
+		WHERE	pj_id = #{pj_id}
+		ORDER	BY pb_date DESC
+				, pb_no DESC LIMIT 1
+	</select>
+
+	<select id="getCommonHRList" parameterType="string"
+		resultMap="EmployeeInputDAO.EmployeeInputVO">
+		SELECT *
+		FROM pj_deploy
+		WHERE pj_id LIKE #{pj_id}
+	</select>
+ 
+	<!-- 전주대비표 -->
+	<insert id="insertTeamWeekReport" parameterType="com.sqisoft.iqs.team.vo.TotalVO">
+		INSERT INTO	week_report (	tm_id
+									, wr_date
+									, wr_contract
+									, wr_sales
+									, wr_netsales
+									, wr_profit
+									, wr_labor_cost
+									, wr_matl_cost
+									, wr_expense
+								)
+					VALUES		(	#{tm_id}
+									, #{wr_date}
+									, #{totalContract}
+									, #{yearSales}
+									, #{netSales}
+									, #{profitSales}
+									, #{totalLaborCost}
+									, #{totalMatlCost}
+									, #{totalCost}
+								)
+	</insert>
+
+	<insert id="insertPjWaitInfo" parameterType="com.sqisoft.iqs.team.vo.WaitVO">
+		INSERT INTO wait (
+		wa_name
+		, tm_id
+		, wa_from_date
+		, wa_to_date
+		)
+		VALUES ( #{wa_name}
+		, #{tm_id}
+		, #{wa_from_date}
+		, #{wa_to_date}
+		)
+	</insert>
+
+	<select id="getWeekList" resultType="string">
+		SELECT DISTINCT wr_date
+		FROM
+		week_report
+	</select>
+
+	<resultMap type="com.sqisoft.iqs.team.vo.TotalVO" id="weekReportResultMap">
+		<id property="tm_id" column="tm_id" />
+		<id property="wr_date" column="wr_date" />
+		<result property="tm_name" column="tm_name" />
+		<result property="totalContract" column="wr_contract" />
+		<result property="yearSales" column="wr_sales" />
+		<result property="netSales" column="wr_netsales" />
+		<result property="profitSales" column="wr_profit" />
+		<result property="totalSalesCost" column="wr_sales_cost" />
+		<result property="totalLaborCost" column="wr_labor_cost" />
+		<result property="totalMatlCost" column="wr_matl_cost" />
+		<result property="totalCost" column="wr_expense" />
+	</resultMap>
+
+	<select id="getWeekReport" parameterType="map" resultMap="weekReportResultMap">
+		SELECT	tm_id
+				, wr_date
+				, wr_contract
+				, wr_sales
+				, wr_netsales
+				, wr_profit
+				, ( wr_labor_cost + wr_matl_cost + wr_expense) as wr_sales_cost
+				, wr_labor_cost
+				, wr_matl_cost
+				, wr_expense
+		FROM	week_report
+		WHERE	tm_id = #{tm_id}
+		AND		wr_date = #{wr_date}
+	</select>
+ 
+	<select		id="getWeekReportList"
+				parameterType="map"
+				resultMap="weekReportResultMap">
+		SELECT	week_report.tm_id as tm_id
+				, team.tm_name as tm_name
+				, wr_date
+				, wr_contract
+				, wr_sales
+				, wr_netsales
+				, wr_profit
+				, ( wr_labor_cost + wr_matl_cost + wr_expense) as wr_sales_cost
+				, wr_labor_cost
+				, wr_matl_cost
+				, wr_expense
+		FROM	week_report
+				, team
+		WHERE	week_report.tm_id = team.tm_id
+		AND		wr_date = #{wr_date}
+		ORDER	BY tm_id
+	</select>
+
+	<!-- 전주 대비표 -->
+	<resultMap	type="com.sqisoft.iqs.team.vo.WeekChartTotalVO"
+				id="weekChartTotalResultMap">
+		<result property="wr_date"		column="wr_date" />
+		<result property="contract"		column="wr_contract" />
+		<result property="yearSales"	column="wr_sales" />
+		<result property="netSales"		column="wr_netsales" />
+		<result property="profit"		column="wr_profit" />
+	</resultMap>
+
+	<select id="getTotalWeekChartList" resultMap="weekChartTotalResultMap">
+		SELECT	wr_date, 
+      			sum(wr_contract) AS wr_contract,
+			      sum(wr_sales) AS wr_sales,
+			      sum(wr_netsales) AS wr_netsales,
+			      sum(wr_profit) AS wr_profit
+		FROM 		totalChart
+		GROUP BY 	wr_date
+	</select>
+
+	<select id="getWeekChartList" parameterType="map" resultMap="weekChartTotalResultMap">
+		SELECT wr_date
+		, wr_contract
+		, wr_sales
+		, wr_netsales
+		, wr_profit
+		FROM totalChart
+		WHERE tm_id = #{tm_id}
+		ORDER BY wr_date
+	</select>
+
+	<select id="getWeekLogReportVO" resultType="com.sqisoft.iqs.team.vo.WeekLogVO">
+		SELECT wl_class
+		,
+		pj_id
+		, tm_id
+		, wl_before_st
+		, wl_after_st
+		, wl_diff_contract
+		,
+		wl_diff_sales
+		, wl_diff_netsales
+		, wl_diff_profit
+		, wl_LMD
+		FROM week_log
+		WHERE wl_LMD BETWEEN DATE_SUB(CURDATE(), INTERVAL 7 DAY) AND CURDATE()
+	</select>
+
+	<!-- 팀별손익정보 -->
+	<select id="getProjectListByTeamId" parameterType="string"
+		resultMap="projectDAO.projectResultMap">
+		SELECT pj_id
+		, pj_name
+		, tm_id
+		, pj_status
+		,
+		pj_status.pj_status_name as pj_status_name
+		, pj_amount
+		, pj_LMD
+		,
+		pj_start_date
+		, pj_end_date
+		, pj_stage
+		, pj_year_sales
+		, pj_matl_cost
+		,
+		pj_outsrc_cost
+		, pj_extra_cost
+		FROM project
+		, pj_status
+		WHERE
+		project.pj_status = pj_status.pj_status_id
+		AND tm_id = #{tm_id}
+		ORDER BY
+		pj_status
+		, pj_LMD
+	</select>
+
+	<select id="getDeployList" parameterType="String"
+		resultType="com.sqisoft.iqs.humanResource.employeeInput.vo.EmployeeInputVO">
+		SELECT dp.pj_id
+		,p.tm_id
+		,pd_name
+		,pd_uprice
+		,pd_start_date
+		,pd_end_date
+		,pd_mm
+		FROM pj_deploy dp
+		, project p
+		WHERE p.tm_id = #{tm_id}
+		AND p.pj_id like '영업%'
+		AND dp.pj_id = p.pj_id
+	</select>
+
+	<select id="getProjectList" parameterType="String"
+		resultType="com.sqisoft.iqs.project.vo.PjBudgetVO">
+		SELECT pb_sales
+		,pb_matl_cost
+		,pb_outsrc_cost
+		FROM pj_budget
+		pb
+		, project p
+		WHERE p.tm_id = #{tm_id}
+		AND p.pj_id = pb.pj_id
+		AND
+		pj_status NOT IN ( SELECT pj_status
+		FROM project
+		WHERE pj_status = "5"
+		AND pj_status = "6"
+		AND pj_status = "7"
+		)
+	</select>
+
+	<select id="getTeamPersonList" parameterType="String"
+		resultType="com.sqisoft.iqs.humanResource.humanResource.vo.HumanResourceVO">
+		SELECT *
+		FROM human_resource
+		WHERE hr_company like 'SQI%'
+	</select>
+
+	<select id="getPersonUprice" parameterType="map" resultType="_int">
+		SELECT hp_mon_price
+		FROM hr_price
+		WHERE hp_team = #{tm_id}
+		AND
+		hp_position = #{hr_position}
+	</select>
+
+	<select id="getAllTeamNetSalesWithoutC" parameterType="map"
+		resultType="_int">
+		SELECT SUM(project.pj_year_sales) -
+		SUM(project.pj_matl_cost) -
+		SUM(project.pj_outsrc_cost)
+		FROM project
+		,
+		pj_status
+		WHERE project.pj_status = pj_status.pj_status_id
+		AND
+		pj_status.pj_status_name NOT IN (#{firstParam}, #{secondParam},
+		#{thirdParam})
+	</select>
+
+	<select id="getPjDeployList" parameterType="string"
+		resultType="com.sqisoft.iqs.humanResource.deployMap.vo.DeployMapVO">
+		SELECT *
+		FROM pj_deploy
+		WHERE pd_name = #{hr_name}
+		AND (
+		(pd_start_date like concat(#{year}, "%")) OR (pd_end_date like
+		concat(#{year},"%")) )
+		ORDER BY pd_start_date
+	</select>
+
+	<select id="getHumanInfo" parameterType="String"
+		resultType="com.sqisoft.iqs.humanResource.humanResource.vo.HumanResourceVO">
+		SELECT *
+		FROM human_resource
+		WHERE hr_name = #{hr_name}
+		AND
+		hr_company like 'SQI%'
+	</select>
+
+	<select id="getTm_id" parameterType="map" resultType="String">
+		SELECT
+		tm_id
+		FROM project
+		WHERE pj_id IN ( SELECT pj_id
+		FROM pj_deploy
+		WHERE
+		pd_name = #{hr_name}
+		AND pj_id = #{pj_id})
+	</select>
+
+	<!-- 수정 부분 -->
+	<delete id="deletePjWaitInfo" parameterType="String">
+		DELETE
+		FROM wait
+		WHERE wa_name = #{wa_name}
+	</delete>
+
+	<select id="getWaitList" parameterType="String"
+		resultType="com.sqisoft.iqs.team.vo.WaitVO">
+		SELECT w.wa_name, w.tm_id, wa_from_date, wa_to_date
+		FROM
+		wait w
+		WHERE w.tm_id = #{tm_id}
+	</select>
+
+	<!-- 회사 전체 팀의 B급 순매출액 합 -->
+	<select id="getTotalComNetSalesWithB" resultType="_int">
+		SELECT
+		SUM(project.pj_year_sales) - SUM(project.pj_matl_cost) -
+		SUM(project.pj_outsrc_cost)
+		FROM project
+		, pj_status
+		WHERE
+		project.pj_status = pj_status.pj_status_id
+		AND pj_status.pj_status_name
+		IN ("B급")
+	</select>
+
+	<!-- 회사 전체 팀의 B급을 제외한 해당하는 PJ 순매출액 합 -->
+	<select id="getTotalComSaleswithoutB" resultType="_int">
+		SELECT (SELECT  SUM(project.pj_year_sales -project.pj_matl_cost - project.pj_outsrc_cost)
+		FROM project
+		, pj_status
+		WHERE project.pj_status = pj_status.pj_status_id
+    AND project.pj_id NOT LIKE "전사%"
+		AND pj_status.pj_status_name NOT IN ("A급","B급","C급","종결")) + (SELECT
+		IFNULL((SELECT SUM(project.pj_year_sales -project.pj_matl_cost - project.pj_outsrc_cost)
+		FROM project
+		, pj_status
+		WHERE project.pj_status = pj_status.pj_status_id
+		AND pj_status.pj_status_name IN ("A급")),0))
+	</select>
+
+	<!-- 특정 팀의 B급에 해당하는 PJ 순매출액 합 -->
+	<select id="getNetSalesWithB" parameterType="String" resultType="_int">
+		SELECT IFNULL(SUM(project.pj_year_sales) - SUM(project.pj_matl_cost) -
+		SUM(project.pj_outsrc_cost),0)
+		FROM project, pj_status
+		WHERE
+		project.tm_id = #{tm_id}
+		AND project.pj_status = pj_status.pj_status_id
+		AND pj_status.pj_status_name IN ("B급")
+	</select>
+
+	<!-- 특정 팀의 B급을 제외한 PJ에 해당하는 순매출액 합 -->
+	<select id="getNetSaleswithoutB" parameterType="String"
+		resultType="_int">
+			SELECT (SELECT SUM(project.pj_year_sales) - SUM(project.pj_matl_cost) -
+		SUM(project.pj_outsrc_cost)
+		FROM project
+		, pj_status
+		WHERE project.pj_status = pj_status.pj_status_id
+		AND project.tm_id = #{tm_id}
+		AND pj_status.pj_status_name NOT IN ("A급","B급","C급","종결")) + (SELECT
+		IFNULL((SELECT SUM(project.pj_year_sales - project.pj_matl_cost - project.pj_outsrc_cost) * 0.9
+		FROM project
+		, pj_status
+		WHERE project.pj_status = pj_status.pj_status_id
+		AND project.tm_id = #{tm_id}
+		AND pj_status.pj_status_name IN ("A급")),0))
+	</select>
+
+	<!-- 경영지원팀의 공통경비 -->
+	<select id="getExpenseManage_part" resultType="_int">
+		SELECT
+		tm_ind_expense
+		FROM team
+		WHERE tm_id = "6M15"
+	</select>
+
+	<!-- 지원(인건비) 전사공통팀의 총 MM 합계 -->
+	<select id="getSupportList"
+		resultType="com.sqisoft.iqs.humanResource.employeeInput.vo.EmployeeInputVO">
+		SELECT pd_name
+		,pd_mm
+		, pd_uprice
+		, hr_company
+		FROM pj_deploy
+		, human_resource
+		WHERE
+		pj_deploy.pd_name = human_resource.hr_name
+		AND pj_id like "전사%"
+	</select>
+
+	<!-- 경영지원팀 평균 직급 단가 -->
+	<select id="getManageMonPrice" resultType="_int">
+		SELECT
+		hr_price.hp_mon_price
+		FROM hr_price
+		WHERE hr_price.hp_team = "6M15"
+	</select>
+
+	<select id="getEmployeeList" parameterType="String"
+		resultType="com.sqisoft.iqs.humanResource.employeeInput.vo.EmployeeInputVO">
+		SELECT pj_deploy.pj_id
+		, project.tm_id
+		, pd_sq
+		, pd_name
+		,
+		pd_uprice
+		, pd_start_date
+		, pd_end_date
+		, pr_sq
+		, pd_ratio
+		, pd_abc
+		,
+		pd_abc_desc
+		, pd_mm
+		, hr_company
+		FROM pj_deploy
+		, human_resource
+		, project
+		WHERE pj_deploy.pd_name = human_resource.hr_name
+		AND pj_deploy.pj_id =
+		#{pj_id}
+		AND pj_deploy.pj_id = project.pj_id
+	</select>
+
+	<select id="getTeamList" parameterType="String"
+		resultType="com.sqisoft.iqs.team.vo.TeamVO">
+		SELECT *
+		FROM team
+		WHERE team.tm_year = #{year}
+	</select>
+
+	<!-- 팀별 공통 비용 구하기 -->
+	<!-- <select id="getTmCommonCost" parameterType="map" resultType="double"> 
+		SELECT IFNULL( (SELECT SUM(pd_uprice * pd_mm * pd_ratio / 100) FROM project 
+		p, pj_deploy d, human_resource h WHERE p.pj_id = d.pj_id AND h.hr_name = 
+		d.pd_name AND p.tm_id = #{tm_id} AND d.pj_id LIKE '%공통%' AND hr_company LIKE 
+		'%SQI%'), 0) </select> -->
+
+	<select id="getTmCommonCost" parameterType="String"
+		resultType="com.sqisoft.iqs.humanResource.employeeInput.vo.EmployeeInputVO">
+		SELECT pd.pj_id
+		, p.tm_id
+		, hr.hr_company
+		, pd.pd_sq
+		, pd.pd_name
+		, pd.pd_uprice
+		, pd.pd_start_date
+		, pd.pd_end_date
+		, pd.pr_sq
+		, pd.pd_ratio
+		, pd.pd_abc
+		, pd.pd_abc_desc
+		, pd.pd_mm
+		, hr.hr_quit_date
+		FROM pj_deploy pd
+		, human_resource hr
+		, project p
+		WHERE pd.pd_name = hr.hr_name
+		AND
+		pd.pj_id
+		LIKE CONCAT('공통', '%')
+		AND p.tm_id = #{tm_id}
+		AND pd.pj_id
+		= p.pj_id
+	</select>
+
+	<select id="getHrUprice" parameterType="map" resultType="double">
+		SELECT
+		IFNULL((SELECT hp.hp_mon_price
+		FROM human_resource h, hr_price hp
+		WHERE
+		hp.hp_team = #{tm_id}
+		AND h.hr_position = hp.hp_position
+		AND h.hr_name =
+		#{hr_name} ) ,0)
+	</select>
+
+	<select id="getHrPrice" parameterType="map" resultType="_int">
+		SELECT
+		hp.hp_mon_price
+		FROM hr_price hp
+		WHERE hp.hp_position = ( SELECT
+		hr.hr_position
+		FROM human_resource hr
+		WHERE hr.hr_name = #{hr_name}
+		)
+		AND
+		hp.hp_team = #{tm_id}
+	</select>
+
+	<select id="getLaborMM" parameterType="map" resultType="double">
+		SELECT
+		IFNULL((SELECT SUM(pd.pd_mm)
+		FROM project, pj_deploy pd, human_resource
+		hr
+		WHERE project.tm_id = #{tm_id}
+		AND project.pj_id = #{pj_id}
+		AND pd.pj_id = project.pj_id
+		AND hr.hr_name = pd.pd_name
+		AND hr.hr_company like "SQI%"),0)
+	</select>
+
+	<select id="getOutMM" parameterType="map" resultType="double">
+		SELECT
+		IFNULL((SELECT SUM(pd.pd_mm)
+		FROM project, pj_deploy pd, human_resource
+		hr
+		WHERE project.tm_id = #{tm_id}
+		AND project.pj_id = #{pj_id}
+		AND pd.pj_id = project.pj_id
+		AND hr.hr_name = pd.pd_name
+		AND hr.hr_company NOT like "SQI%"),0)
+	</select>
+
+	<select id="getTmExpncRate" parameterType="string" resultType="double">
+		SELECT tm_expnc_rate
+		FROM team
+		WHERE tm_id = #{tm_id}
+	</select>
+
+	<select id="getTmIndExpense" parameterType="string" resultType="double">
+		SELECT tm_ind_expense
+		FROM team
+		WHERE tm_id = #{tm_id}
+	</select>
+
+
+	<resultMap type="com.sqisoft.iqs.team.vo.totalChartVO" id="totalChartVO">
+		<id property="tm_id" column="tm_id" />
+		<id property="wr_date" column="wr_date" />
+		<result property="wr_contract" column="wr_contract" />
+		<result property="wr_sales" column="wr_sales" />
+		<result property="wr_netsales" column="wr_netsales" />
+		<result property="wr_profit" column="wr_profit" />
+		<result property="wr_labor_cost" column="wr_labor_cost" />
+		<result property="wr_matl_cost" column="wr_matl_cost" />
+		<result property="wr_expense" column="wr_expense" />
+		<result property="salesCost" column="salesCost" />
+		<result property="commonWaitCost" column="commonWaitCost" />
+		<result property="supportCost" column="supportCost" />
+		<result property="outCost" column="outCost" />
+	</resultMap>
+
+	<select id="getTotalChart" parameterType="string" resultType="com.sqisoft.iqs.team.vo.totalChartVO">
+		SELECT	tm_id,
+				wr_date,
+				wr_contract,
+				wr_sales,
+				wr_netsales,
+				wr_profit,
+				wr_labor_cost,
+				wr_matl_cost,
+				wr_expense,
+				salesCost,
+				commonWaitCost,
+				supportCost,
+				outCost,
+				totalSalesCost
+		FROM	totalChart
+		WHERE	tm_id = #{tm_id}
+   		AND		wr_date = (SELECT MAX(wr_date) FROM totalChart)
+	</select>
+	<!-- 목표 계약액, 매출, 순매출, 이익 -->
+	<select id="getGageGoal"  resultType="com.sqisoft.iqs.team.vo.GageGoalVO">
+		<!-- select sum(tm_contract) as contractGoal, sum(tm_sales) as salesGoal, (sum(tm_sales)-sum(tm_outsrc_cost)-sum(tm_matl_cost)) as netSalesGoal -->
+		<!-- from team
+		where tm_year = YEAR(now()) -->
+		select 	substr(sum(tm_contract), -8, 3) as contractGoal
+        		,substr(sum(tm_sales), -8, 3) as salesGoal
+        		,substr(LPAD((sum(tm_sales)-sum(tm_outsrc_cost)-sum(tm_matl_cost)), 8, '0'), -8, 3) as netSalesGoal
+        		,substr(LPAD(sum(tm_profit), 8, '0'), -8, 3) as profit
+		from 	team
+		where 	tm_year = YEAR(now())
+	</select>
+	
+	<!-- 실제 계약액, 매출, 순매출, 이익 -->
+	<select id="getGageReal" parameterType="string" resultType="com.sqisoft.iqs.team.vo.GageRealVO">
+		<!-- SELECT SUM(wr_contract) as contractReal, SUM(wr_sales) as salesReal, SUM(wr_netsales) as netSalesReal -->
+		<!-- SELECT 	wr_date,substr(round(SUM(wr_contract), -5), -8, 3) as contractReal , 
+      			substr(round(SUM(wr_sales), -5), -8, 3) as salesReal, 
+      			substr(LPAD(round(SUM(wr_netsales), -5), 8,'0'), -8, 3) as netSalesReal
+		FROM totalChart
+		WHERE wr_date = #{currentWeek}
+		GROUP BY wr_date -->
+		 SELECT 	wr_date,substr(round(SUM(wr_contract), -5), -8, 3) as contractReal , 
+       				substr(round(SUM(wr_sales), -5), -8, 3) as salesReal, 
+       				substr(LPAD(round(SUM(wr_netsales), -5), 8,'0'), -8, 3) as netSalesReal,
+            		substr(LPAD(round(sum(wr_profit), -4), 8, '0'), -8, 3) as profit
+ 		 FROM totalChart
+ 		 WHERE wr_date = #{currentWeek}
+ 		 GROUP BY wr_date
+	</select>
+	
+	<insert id="updateTotalCost" parameterType="com.sqisoft.iqs.team.vo.TotalProjectByTeamVO">
+		INSERT INTO totalChart(	tm_id, 
+								wr_date,
+								wr_contract,
+								wr_sales,
+								wr_netsales,
+								wr_profit,
+								wr_labor_cost,
+								wr_matl_cost,
+								wr_expense,
+								salesCost,
+								commonWaitCost,
+								supportCost,
+								outCost,			
+								totalSalesCost	)
+					VALUES	(	#{tm_id},
+								#{currentWeek},
+								#{totalContract},
+								#{yearSales},
+								#{netSales},
+								#{profitSales},
+								#{totalDirectCost},
+								#{totalMatlCost},
+								#{totalCost}, 
+								#{totalSales},
+								#{commonAndWaitCost},
+								#{totalSupport}, 
+								#{totalOutCost},
+								#{totalSalesCost}	)
+		ON		DUPLICATE KEY UPDATE 
+								tm_id = #{tm_id}
+								, wr_date = #{currentWeek}
+								, wr_contract = #{totalContract}
+								, wr_sales = #{yearSales}
+								, wr_netsales = #{netSales}
+								, wr_profit = #{profitSales}
+								, wr_labor_cost = #{totalDirectCost}
+								, wr_matl_cost	= #{totalMatlCost}
+								, wr_expense	= #{totalCost}
+								, salesCost	= #{totalSales}
+								, commonWaitCost	= #{commonAndWaitCost}
+								, supportCost	= #{totalSupport}
+								, outCost	= #{totalOutCost}
+								, totalSalesCost = #{totalSalesCost}
+	</insert>
+	
+	<resultMap type="com.sqisoft.iqs.team.vo.WeekSumChartVO" id="weekSumChartVO">
+		<id property="tm_id" column="tm_id" />
+		<id property="wr_date" column="wr_date" />
+		<result property="wr_contract" column="wr_contract" />
+		<result property="wr_sales" column="wr_sales" />
+		<result property="wr_netsales" column="wr_netsales" />
+		<result property="wr_profit" column="wr_profit" />
+	</resultMap>
+	
+	<insert id="updateWeekSumChart" parameterType="map" >
+		INSERT INTO totalChart(	tm_id, 
+								wr_date,
+								wr_contract,
+								wr_sales,
+								wr_netsales,
+								wr_profit	)
+					VALUES	(	#{tm_id},
+								#{currentWeek},
+								#{totalContract},
+								#{yearSales},
+								#{netSales},
+								#{profitSales}	)
+		ON		DUPLICATE KEY UPDATE 
+								tm_id = #{tm_id}
+								, wr_date = #{currentWeek}
+								, wr_contract = #{totalContract}
+								, wr_sales = #{yearSales}
+								, wr_netsales = #{netSales}
+								, wr_profit = #{profitSales}
+	</insert>
+
+</mapper>

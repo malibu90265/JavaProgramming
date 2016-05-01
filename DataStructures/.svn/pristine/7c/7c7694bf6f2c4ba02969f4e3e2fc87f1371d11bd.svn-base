@@ -1,0 +1,40 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+  PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+  "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="memberDAO">
+	<resultMap 	id="memberMap" 		type="com.sqisoft.iqs.pf.vo.MemberVO">
+		<result property="name" 	column="name" />
+		<result property="position" column="position" />
+		<result property="job" 		column="job" />
+	</resultMap>
+	
+	<resultMap 	id="empMap" 			type="com.sqisoft.iqs.hr.vo.Employee_VO">
+		<result property="name" 		column="name" />
+		<result property="position" 	column="position" />
+		<result property="job" 			column="job" />
+	</resultMap>
+	
+	<select id="nameExist" parameterType="String" resultType="int">
+		SELECT	count(*)
+		FROM	employee
+		WHERE	name=#{pj_biz, jdbcType=VARCHAR}
+	</select>
+	
+	<select id="nameSerch" resultMap="empMap">
+		SELECT	e.name as name
+				, SUBSTRING(e.position,2,2) as position
+		FROM	employee e 
+		order	by e.position, name ;
+	</select>
+	
+	<!-- <select id="getDeptList" resultMap="deptMap"> SELECT deptno, dname, 
+		loc FROM dept </select> <insert id="insert" parameterType="com.dept.vo.DeptVO"> 
+		INSERT INTO dept(deptno, dname, loc) VALUES (#{deptNo}, #{deptName}, #{location}) 
+		</insert> <update id="update" parameterType="com.dept.vo.DeptVO"> UPDATE 
+		dept SET dname=#{deptName}, loc=#{location} WHERE deptno=#{deptNo} </update> 
+		<delete id="delete" parameterType="Integer"> DELETE dept WHERE deptno=#{deptNo} 
+		</delete> <select id="getLocation" parameterType="com.dept.vo.DeptVO" resultMap="deptMap"> 
+		SELECT deptno, dname, loc FROM dept <where> <if test="location != null"> 
+		UPPER(loc) LIKE UPPER('%'||#{location}||'%') </if> </where> </select> -->
+</mapper>

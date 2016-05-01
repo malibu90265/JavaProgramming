@@ -1,0 +1,584 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="hrDao">
+	
+	<insert id="project_Insert" parameterType="com.sqisoft.iqs.hr.vo.ProjectVO">
+		INSERT	INTO	project	(
+									pj_id
+									, team_id
+									, pj_name
+									, customer_id
+									, pj_reg_day
+									, pj_start_day
+									, pj_end_day
+									, pj_prog
+									, pj_pm
+									, pj_biz
+									, pj_etc
+									, pj_location
+								)
+				VALUES 			(
+									#{pj_id}
+									, #{team_id}
+									, #{pj_name}
+									, #{customer_id}
+									, #{pj_reg_day}
+									, #{pj_start_day}
+									, #{pj_end_day}
+									, #{pj_prog}
+									, #{pj_pm}
+									, #{pj_biz}
+									, #{pj_etc}
+									, #{pj_location}
+								)
+	</insert>
+	
+
+	<insert id="emp_Insert" parameterType="com.sqisoft.iqs.hr.vo.Employee_VO">
+		INSERT	INTO	employee	(
+										name
+										, position
+										, grade
+										, salary
+										, team_id
+										, area
+										, hire_date
+										, quit_date
+										, career_date
+										, division
+										, photo
+										, email
+										, modify_user
+										, systime
+										, envclass
+										, skill
+										, company
+										, phonenum
+										, time_off
+										, to_start_day
+										, to_end_day
+									)
+				VALUES				(
+										#{name}
+										, #{position}
+										, #{grade}
+										, #{salary}
+										, #{team_id}
+										, #{area}
+										, #{hire_date, jdbcType=DATE}
+										, #{quit_date, jdbcType=DATE}
+										, #{career_date, jdbcType=DATE}
+										, #{division}
+										, #{photo}
+										, #{email}
+										, #{modify_user}
+										, now()
+										, #{envclass, jdbcType=VARCHAR}
+										, #{skill, jdbcType=VARCHAR}
+										, #{company}
+										, #{phonenum}
+										, "0"
+										, #{to_start_day, jdbcType=DATE}
+										, #{to_end_day, jdbcType=DATE}
+									)
+	</insert>
+	
+	
+	<insert id="place_Insert" parameterType="String">
+		INSERT	INTO	mpplace	(
+									name
+								) 
+				VALUES			(
+									#{name}
+								)
+	</insert>
+	
+	<delete id="place_Delete" parameterType="String">
+		DELETE
+		FROM	mpplace
+		WHERE	name=#{name}
+	</delete>
+	
+	<insert id="emppj_Insert" parameterType="com.sqisoft.iqs.hr.vo.Employee_VO">
+		INSERT	INTO	pj_history	(
+										pj_id
+										, name
+										, pj_start_day
+										, pj_end_day
+										, use_skill
+									) 
+				VALUES				(
+										"대기"
+										, #{name}
+										, #{hire_date}
+										, concat(year(curdate()),'-12-31')
+										, null
+									)
+	</insert>
+	
+	<insert id="emp_SkillInsert" parameterType="com.sqisoft.iqs.hr.vo.SkillVO">
+		INSERT	INTO	userskill	(
+										empname
+										, fieldcd
+										, groupcd
+										, skillcd
+										, skill_year
+									)
+				VALUES				( 
+										#{name}
+										, #{fieldcd}
+										, #{groupcd}
+										, #{skillcd}
+										, #{skill_year}
+									)
+	</insert>
+	
+	<select id="teamExist" parameterType="String" resultType="int">
+		SELECT	count(*)
+		FROM	team
+		WHERE	team_id=#{team_id} 
+		AND		team_id!='6C'
+	</select>
+	
+	<select id="emp_SearchEmpList" parameterType="hashMap" resultType="com.sqisoft.iqs.hr.vo.Employee_VO">
+		SELECT	* 
+		FROM	employee
+		WHERE	1=1
+		<if test="name != ''">
+		and		name like concat (#{name},'%')
+		</if>
+		<if test="team != 'al'">
+		and		team_id= #{team}
+		</if>
+		<if test="position != ''">
+		and		position= #{position}
+		</if>
+		<if test="year != ''">
+		and		hire_date like concat (#{year},'%')   
+		</if>
+		<if test="area != ''">
+		and		area like concat ('%',#{area},'%')
+		</if>
+		order	by name asc
+	</select>
+
+	<select id="emp_getEmp" parameterType="hashMap" resultType="com.sqisoft.iqs.hr.vo.Employee_VO">
+		SELECT  e.name
+				, e.position
+				, e.grade
+				, e.salary
+				, e.team_id
+				, t.team_name
+				, e.area
+				, e.hire_date
+				, e.quit_date
+				, e.career_date
+				, e.division
+				, e.photo
+				, e.email
+				, e.envclass
+				, e.skill
+				, e.company
+				, e.phonenum
+				, e.time_off
+				, e.to_start_day
+				, e.to_end_day
+				, arealoc.e_area
+		FROM	employee e
+				, team t
+				, 	(
+						SELECT	DISTINCT emp.name
+								, emp.area
+								, location.e_area 
+						FROM	employee emp 
+						LEFT	JOIN	(
+											SELECT	concat(a.name," ",b.name) as e_area
+													, concat(b.contcd,"/",b.citycd,"/",b.gucd) as loc
+											FROM	area a
+													,area b 
+											WHERE	a.citycd = b.citycd 
+											and		a.gucd =0 and b.gucd!=0
+										) as location 
+						ON location.loc = emp.area
+					) as arealoc
+	    WHERE	e.team_id = t.team_id  
+	    AND		arealoc.name  = e.name
+	    AND		e.name=#{name} 
+	    GROUP	BY name
+	</select>
+	
+
+	<select id="emp_duplicheck" parameterType="string" resultType="com.sqisoft.iqs.hr.vo.Employee_VO">
+		SELECT	* 
+		FROM	employee 
+		WHERE	name LIKE CONCAT(#{name},'%')
+	</select>
+ 
+	<select id="getMaxName" parameterType="String" resultType="String">
+		SELECT	Max(name) 
+		FROM	employee 
+		WHERE	name LIKE CONCAT(#{name},' %')
+	</select>
+	
+	
+	<select id="emp_MppList" parameterType="String"	resultType="com.sqisoft.iqs.hr.vo.MppListVO">
+		SELECT	p.pj_id AS cpid
+				, p.pj_start_day AS cpstartday
+				, p.pj_end_day   AS cpendday
+				, emppj.name AS name
+				, emppj.position AS position
+				, p.team_id AS team
+				, emppj.use_skill AS skill
+				, emppj.division AS division
+		FROM	budget b
+				, project p
+		LEFT	OUTER JOIN	(
+								SELECT	emp.name AS name
+										, emp.position AS position
+										, ph.use_skill AS use_skill
+										, emp.division AS division 
+										, ph.pj_id AS pj_id
+								FROM	employee emp
+										, pj_history ph
+								WHERE	emp.name = ph.name
+								AND		ph.pj_start_day<![CDATA[<]]>SYSDATE() 
+								AND		ph.pj_end_day<![CDATA[>]]>SYSDATE()
+							)	AS emppj 
+		ON		emppj.pj_id = p.pj_id
+		LEFT	JOIN team t
+		ON		p.team_id = t.team_id
+		WHERE	b.pj_id=p.pj_id 
+		AND		p.team_id = #{team_id} 
+		AND		pj_prog IN ( '1이월','2완료','3대기','4A급') 
+		AND		p.pj_start_day<![CDATA[<]]>SYSDATE() 
+		and		p.pj_end_day<![CDATA[>]]>SYSDATE()
+		ORDER	BY t.team_id, p.pj_id, emppj.division DESC, emppj.position, emppj.name
+	</select>
+
+	<select id="project_GetCount" parameterType="String" resultType="com.sqisoft.iqs.hr.vo.ProjectCountVO">
+		SELECT	t.team_id AS team_id
+				, t.team_name AS team_name
+				, p.pj_id AS pj_id
+				, p.pj_start_day AS pj_start_day
+				, p.pj_end_day AS pj_end_day
+				, IFNULL(emppj.name_count,0) AS name_count 
+		FROM	budget b
+				,project p
+		LEFT	JOIN	(
+							SELECT	ph.pj_id AS pj_id
+									, count(emp.name) AS name_count
+							FROM	pj_history ph
+									, employee emp
+							WHERE	emp.name = ph.name 
+							AND		ph.pj_start_day <![CDATA[<]]> SYSDATE() 
+							AND		ph.pj_end_day <![CDATA[>]]> SYSDATE()
+							GROUP	BY ph.pj_id
+						) AS emppj 
+		ON		emppj.pj_id = p.pj_id
+		LEFT	JOIN team t
+		ON		p.team_id = t.team_id
+		WHERE	b.pj_id = p.pj_id 
+		AND		p.team_id = #{team_id}
+		AND		pj_prog IN ( '1이월', '2완료', '3대기', '4A급' ) 
+		AND		p.pj_start_day <![CDATA[<]]> SYSDATE()
+		AND		p.pj_end_day <![CDATA[>]]> SYSDATE()
+		ORDER	BY t.team_id, p.pj_id
+	</select>
+
+
+	<select id="mailCheck" parameterType="map" resultType="com.sqisoft.iqs.hr.vo.Employee_VO">
+		SELECT	email 
+		FROM	employee 
+		WHERE	email = #{mailID}
+		AND		name != #{name} 
+		AND		division ="직원"
+		limit	1
+	</select>
+
+
+	<select id="getSkillOptionsPC" resultType="map">
+		select	concat(fieldcd,"/",groupcd) as code
+				, name 
+		from	skillcode 
+		where	fieldcd = "1" 
+		and		skillcd is null
+	</select>
+
+	
+	<select id="getSkillOptionsCC" parameterType="string" resultType="map">
+		select	concat(fieldcd,"/",groupcd,"/",skillcd) as code
+				, name 
+		from	skillcode 
+		where	fieldcd = "1" 
+		and		groupcd = #{val}
+		and		skillcd is not null
+	</select>
+
+	
+	<select id="getSkillOptionsDC" resultType="map">
+		select	concat(fieldcd,"/",groupcd) as code
+				, name 
+		from	skillcode
+		where	fieldcd = "2"
+	</select>
+
+	
+	<!-- 지역 처리 -->	
+	<select id="getAreaOptionsPC" resultType="map">
+		select	concat (contcd,"/",citycd) as code
+				, name 
+		from	area
+		where	contcd = "1" 
+		and		gucd="0"
+	</select>
+	
+	<select id="getAreaOptionsCC" parameterType="string" resultType="map">
+		select	concat(contcd,"/",citycd,"/",gucd) as code
+				, name
+		from	area
+		where	contcd = "1"
+		and		citycd = #{val}
+		and		gucd!="0"
+	</select>
+	
+	<select id="empSearch" parameterType="com.sqisoft.iqs.hr.vo.SkillVO" resultType="com.sqisoft.iqs.hr.vo.Employee_VO">
+		SELECT	DISTINCT(e.name)
+				, e.team_id
+				, t.team_name
+				, SUBSTRING(e.position,2,2) as position
+				, e.area
+				, e.hire_date
+				, e.quit_date
+				, e.division
+				, arealoc.e_area
+		FROM	employee e
+				, team t
+				, (	SELECT	DISTINCT	emp.name
+							, emp.area
+							, location.e_area 
+					FROM	employee emp
+					LEFT	JOIN (	SELECT	concat(a.name," ",b.name) as e_area
+											, concat(b.contcd,"/",b.citycd,"/",b.gucd) as loc
+									FROM	area a
+											,area b
+									WHERE	a.citycd = b.citycd
+									and		a.gucd =0
+									and		b.gucd!=0
+								) as location
+					ON location.loc = emp.area
+				) as arealoc
+		<if test="groupcd !=null and groupcd!=''">
+				, 
+				(	SELECT	empname
+					FROM	userskill
+					WHERE	fieldcd='1'
+					AND		groupcd=#{groupcd}
+			<if test="skillcd!=null">
+					AND		skillcd=#{skillcd}
+			</if>
+				) as u
+		</if>
+		<if test="jobcd!=null and jobcd!=''">
+				,
+				(	SELECT	empname
+					FROM	userskill
+					where	fieldcd="2"
+					AND		groupcd=#{jobcd}
+				)as j
+		</if>
+		WHERE	e.team_id = t.team_id 
+		AND		arealoc.name = e.name
+		<if test="groupcd != null and groupcd!=''">
+		AND		e.name=u.empname
+		</if>
+		<if test="jobcd!=null and jobcd!=''">
+		AND		e.name=j.empname
+		</if>
+		<if test="team_id != 'al'">
+		AND		e.team_id=#{team_id}
+		</if>
+		<if test="name != ''">
+		AND		e.name LIKE CONCAT('%',#{name},'%')
+		</if>
+		<if test="division != 'al'"> 
+		AND		e.division= #{division} 
+		</if>
+		<if test="area != ''">
+		AND		e.area LIKE CONCAT(#{area},'%') 
+		</if>
+		<if test="position != ''">
+		AND		e.position=#{position} 
+		</if>
+		<if test="hire_date != ''"> 
+		AND		e.hire_date LIKE CONCAT(#{hire_date},'%')
+		</if>
+ 		<if test="envclass != '' and envclass!=null"> 
+ 		AND		e.envclass LIKE CONCAT('%',#{envclass},'%')
+ 		</if> 
+		<if test="skill != ''">
+		AND		e.skill LIKE CONCAT(#{skill},'%')
+		</if>
+		ORDER	BY e.division desc, e.quit_date asc, e.name asc
+	</select>
+	
+
+	<select id="getSkill" parameterType="Integer" resultType="com.sqisoft.iqs.hr.vo.SkillVO">
+		select	fieldcd
+				, groupcd
+				, skillcd
+				, skill_year
+		from	userskill
+		where	empname=#{name}
+	</select>
+
+	<delete id="emp_Delete" parameterType="String">
+		DELETE
+		FROM	employee
+		where	name=#{name}
+	</delete>
+	
+	<delete id="emp_SkillDel" parameterType="Integer">
+		DELETE
+		FROM	userskill
+		where	empname=#{name}
+	</delete>
+
+	<update id="emp_Update" parameterType="com.sqisoft.iqs.hr.vo.Employee_VO">
+		UPDATE	employee 
+		SET		name=#{name}
+				, position=#{position}
+				, grade=#{grade}
+				, area=#{area}
+				, team_id=#{team_id}
+				, salary=#{salary}
+				, hire_date=#{hire_date}
+				, 
+		<if test="career_date != ''">
+				career_date=#{career_date}
+				,
+		</if>
+		<if test="career_date == ''">
+				career_date=null
+				,
+		</if>
+		<if test="quit_date != ''">
+				quit_date=#{quit_date}
+				,
+		</if>
+		<if test="quit_date == ''">
+				quit_date=null
+				,
+		</if>
+				photo=#{photo}
+				, email=#{email}
+				, envclass=#{envclass, jdbcType=VARCHAR}
+				, skill=#{skill, jdbcType=VARCHAR}
+				, company=#{company}
+				, phonenum=#{phonenum}
+				,
+		<if test="to_start_day != ''">
+				to_start_day=#{to_start_day}
+				,
+		</if>
+		<if test="to_start_day == ''">
+				to_start_day=null
+				,
+		</if>
+		<if test="to_end_day != ''">
+				to_end_day=#{to_end_day}
+				,
+		</if>
+		<if test="to_end_day == ''">
+				to_end_day=null
+				,
+		</if>
+				time_off = #{time_off}
+		WHERE	name=#{h_name}
+	</update>
+	
+	
+	<!--timeOff -->
+	<update id="emp_TimeoffUpdate" parameterType="HashMap">
+		UPDATE	mpplace
+		SET
+		<if test="to_start_day == '0000-00-00' || to_start_day == '' || to_start_day == null ">
+				apid=null
+				, apstartday=null
+				, apendday=null
+		</if>
+		
+		WHERE	name=#{name}
+	</update>
+	
+	<update id="emp_TimeoffUpdate2" parameterType="HashMap">
+		UPDATE	mpplace
+		SET		apid='휴직'
+				, apstartday=#{to_start_day}
+				, apendday=#{to_end_day}
+		WHERE	name=#{name}
+	</update>
+	
+	
+	<update id="emp_TimeoffUpdate3" parameterType="HashMap">
+		UPDATE	mpplace
+		SET		cpstartday=#{to_start_day}
+				, cpendday=#{to_end_day}
+		WHERE	name=#{name}
+	</update>
+	
+	<select id="getMpplaceInfo" parameterType="String" resultType="com.sqisoft.iqs.hr.vo.MpPlaceVO">
+		SELECT	*
+		FROM	mpplace
+		WHERE	name=#{name}
+	</select>
+	
+	<update id="pjHistory_TimeoffUpdate" parameterType="HashMap">
+		UPDATE	pj_history_tmp 
+		SET		pj_end_day=(select #{to_start_day} - interval 1 day)
+		WHERE	name=#{name} 
+		AND		pj_id = (
+							select	cpid 
+							from	mpplace
+							Where	name=#{name}
+						) 
+	</update>
+	
+	
+	<update id="pjHistory_TimeoffDayUpdate" parameterType="HashMap">
+		UPDATE	pj_history_tmp
+		SET		pj_start_day=#{to_start_day}
+				, pj_end_day=#{to_end_day}
+		WHERE	pj_id = '휴직'
+		AND		name=#{name} 
+	</update>
+	
+	
+	<insert id="emp_TimeoffInsert" parameterType="HashMap">
+		INSERT	INTO	pj_history_tmp 
+				VALUES	(
+							'휴직'
+							, #{name}
+							, #{to_start_day}
+							, #{to_end_day}
+							, null
+						)
+	</insert>
+	
+	<insert id="out_hisReg" parameterType="com.sqisoft.iqs.hr.vo.OutSal_historyVO">
+		insert	into	outSal_history
+				values	(
+							#{name}
+							, #{hire_date}
+							, #{salary}
+							, #{mpm}
+						)
+	</insert>
+	
+	<select id="emp_getTimeoff" parameterType="String" resultType="com.sqisoft.iqs.hr.vo.Employee_VO">
+		select	time_off
+				, to_start_day
+				, to_end_day
+		from	employee
+		where	name=#{name}
+	</select>
+</mapper>

@@ -1,0 +1,26 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xsi:schemaLocation="http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans.xsd">
+
+	<bean id="teamDAO" class="com.sqisoft.iqs.team.dao.TeamDAOImpl">
+		<property name="sqlSessionTemplate" ref="sqlSession"/>
+	</bean>
+	
+	<bean id="teamService" class="com.sqisoft.iqs.team.service.TeamServiceImpl">
+		<property name="teamDAO" ref="teamDAO"/>
+	</bean>
+	
+	<!-- total -->
+	<bean id="totalDAO" class="com.sqisoft.iqs.team.dao.TotalDAOImpl">
+		<property name="sqlSessionTemplate" ref="sqlSession"/>
+	</bean>
+	
+	<bean id="totalService" class="com.sqisoft.iqs.team.service.TotalServiceImpl">
+		<property name="totalDAO" ref="totalDAO"/>
+		<property name="teamDAO" ref="teamDAO"/>
+		<property name="pjBudgetDAO" ref="pjBudgetDAO"/>
+		
+	</bean>
+	
+</beans>

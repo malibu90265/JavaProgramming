@@ -1,0 +1,57 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+  PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+  "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="reportDAO">
+	<resultMap type="com.sqisoft.iqs.rp.vo.Report2VO" id="report2ResultMap">
+		<result property="team_id"		column="TEAM_ID"/>
+		<result property="w_date"		column="W_DATE"/>
+		<result property="file_name"	column="FILE_NAME"/>
+	</resultMap>
+
+	<select id="getWeekDateList" resultType="String">
+		SELECT	w_date
+		FROM	report
+		GROUP	BY w_date
+		ORDER	BY w_date DESC
+	</select>
+	
+	<select id="getReport" parameterType="com.sqisoft.iqs.rp.vo.ReportVO" resultType="com.sqisoft.iqs.rp.vo.ReportVO">
+		SELECT	*
+		FROM	report
+		WHERE	w_date = #{w_date}
+		AND		team_id = #{team_id}
+	</select>	
+	
+	<insert id="insertReport" parameterType="com.sqisoft.iqs.rp.vo.ReportVO">
+		INSERT	INTO report	(
+								team_id
+								, w_date
+								, report_txt
+							)
+				VALUES		(
+								#{team_id}
+								, #{w_date}
+								, #{report_txt}
+							)
+	</insert>
+
+	<update id="updateReport" parameterType="com.sqisoft.iqs.rp.vo.ReportVO">
+		UPDATE	report
+		SET		report_txt = #{report_txt}
+		WHERE	team_id = #{team_id}
+		AND		w_date = #{w_date}
+	</update>
+
+	<select id="getReport2" resultMap="report2ResultMap">
+		SELECT	* 
+		FROM	report3
+	 </select>
+
+	<select id="getWeekDateList2" resultType="String">
+		SELECT	w_date
+		FROM	report3
+		GROUP	BY w_date
+		ORDER	BY w_date DESC
+	</select>
+</mapper>

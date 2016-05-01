@@ -1,0 +1,45 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beansProjectDescription>
+	<version>1</version>
+	<pluginVersion><![CDATA[3.6.1.201408250730-RELEASE]]></pluginVersion>
+	<configSuffixes>
+		<configSuffix><![CDATA[xml]]></configSuffix>
+	</configSuffixes>
+	<enableImports><![CDATA[true]]></enableImports>
+	<configs>
+		<config>src/main/resources/spring/commonControllers-context.xml</config>
+		<config>src/main/resources/spring/hrControllers-context.xml</config>
+		<config>src/main/resources/spring/hr-context.xml</config>
+		<config>src/main/resources/spring/pf-context.xml</config>
+		<config>src/main/resources/spring/pfControllers-context.xml</config>
+		<config>src/main/resources/spring/rp-context.xml</config>
+		<config>src/main/resources/spring/rpControllers-context.xml</config>
+	</configs>
+	<autoconfigs>
+		<config>src/main/resources/spring/deploy-map-context.xml</config>
+		<config>src/main/resources/spring/empInputControllers-context.xml</config>
+		<config>src/main/resources/spring/empPjMapController-context.xml</config>
+		<config>src/main/resources/spring/empInput-context.xml</config>
+		<config>src/main/resources/spring/project-context.xml</config>
+		<config>src/main/resources/spring/servertype-context.xml</config>
+		<config>src/main/resources/spring/empStandBy-context.xml</config>
+		<config>src/main/resources/spring/project_settingControllers-context.xml</config>
+		<config>src/main/resources/spring/deployControllers-context.xml</config>
+		<config>src/main/resources/spring/empPjMap-context.xml</config>
+		<config>src/main/resources/spring/deploy-mapController-context.xml</config>
+		<config>src/main/resources/spring/empStandByController-context.xml</config>
+		<config>src/main/resources/spring/project_setting-context.xml</config>
+		<config>src/main/resources/spring/watingList-context.xml</config>
+		<config>src/main/resources/spring/watingListController-context.xml</config>
+		<config>src/main/resources/spring/adminControllers-context.xml</config>
+		<config>src/main/resources/spring/teamControllers-context.xml</config>
+		<config>src/main/resources/spring/admin-context.xml</config>
+		<config>src/main/resources/spring/deploy-context.xml</config>
+		<config>src/main/resources/spring/team-context.xml</config>
+		<config>src/main/resources/spring/servlet-context.xml</config>
+		<config>src/main/resources/spring/projectControllers-context.xml</config>
+		<config>src/main/resources/spring/transaction-context.xml</config>
+	</autoconfigs>
+	<configSets>
+	</configSets>
+</beansProjectDescription>

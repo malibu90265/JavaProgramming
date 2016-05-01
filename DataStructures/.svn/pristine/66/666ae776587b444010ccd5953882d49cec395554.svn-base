@@ -1,0 +1,66 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xsi:schemaLocation="http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans.xsd">
+	
+	<!-- pf.customer -->
+	<bean id="customerDAO" class="com.sqisoft.iqs.pf.customer.dao.impl.CustomerDAOImpl">
+		<property name="sqlSessionTemplate" ref="sqlSession"/>
+	</bean>
+	
+	<bean id="customerService" class="com.sqisoft.iqs.pf.customer.service.impl.CustomerServiceImpl">
+		<property name="customerDAO" ref="customerDAO"/>
+	</bean>
+	
+	<!-- pf.member -->
+	<bean id="memberDAO" class="com.sqisoft.iqs.pf.member.dao.impl.MemberDAOImpl">
+		<property name="sqlSessionTemplate" ref="sqlSession"/>
+	</bean>
+	
+	<bean id="memberService" class="com.sqisoft.iqs.pf.member.service.impl.MemberServiceImpl">
+		<property name="memberDao" ref="memberDAO"/>
+		<property name="p_dao" ref="projectDAOIF"/>
+	</bean>
+	
+	<!-- pf.project -->
+	<bean id="projectDAOIF" class="com.sqisoft.iqs.pf.project.dao.impl.ProjectDAOImpl">
+		<property name="sqlSessionTemplate" ref="sqlSession"/>
+	</bean>
+	
+	<bean id="projectServiceIF" class="com.sqisoft.iqs.pf.project.service.impl.ProjectServiceImpl">
+		<property name="projectDao" ref="projectDAOIF"/>
+	</bean>
+	
+	<!-- pf.schedule -->
+	<bean id="weekBudgetDAO" class="com.sqisoft.iqs.pf.schedule.dao.impl.WeekBudgetDAOImpl">
+		<property name="sqlSessionTemplate" ref="sqlSession"/>
+	</bean>
+	
+	<bean id="weekBudgetService" class="com.sqisoft.iqs.pf.schedule.service.impl.WeekBudgetServiceImpl">
+		<property name="project_dao" ref="projectDAOIF"/>
+		<property name="t_dao" ref="teamDAOIF"/>
+		<property name="w_dao" ref="weekBudgetDAO"/>
+		<property name="weekend_dao" ref="weekendDAO"/>
+	</bean>
+	
+	<bean id="weekendDAO" class="com.sqisoft.iqs.pf.schedule.dao.impl.WeekendDAOImpl">
+		<property name="sqlSessionTemplate" ref="sqlSession"/>
+	</bean>
+	
+	<bean id="weekendService" class="com.sqisoft.iqs.pf.schedule.service.impl.WeekendServiceImpl">
+		<property name="project_dao" ref="projectDAOIF"/>
+		<property name="team_dao" ref="teamDAOIF"/>
+		<property name="weekendDao" ref="weekendDAO"/>
+	</bean>
+	
+	<bean id="teamDAOIF" class="com.sqisoft.iqs.pf.team.dao.impl.TeamDAOImpl">
+		<property name="sqlSessionTemplate" ref="sqlSession"/>
+	</bean>
+	
+	<bean id="teamServiceIF" class="com.sqisoft.iqs.pf.team.service.impl.TeamServiceImpl">
+		<property name="out_sal_dao" ref="outSalHistoryDAO"/>
+		<property name="teamDao" ref="teamDAOIF"/>
+		<property name="wb_dao" ref="weekBudgetDAO"/>
+	</bean>
+	
+</beans>

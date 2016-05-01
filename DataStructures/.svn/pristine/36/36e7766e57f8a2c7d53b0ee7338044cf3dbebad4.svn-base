@@ -1,0 +1,66 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<beans xmlns="http://www.springframework.org/schema/beans"
+	xmlns:p="http://www.springframework.org/schema/p" xmlns:context="http://www.springframework.org/schema/context"
+	xmlns:aop="http://www.springframework.org/schema/aop" xmlns:jee="http://www.springframework.org/schema/jee"
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:tx="http://www.springframework.org/schema/tx"
+	xmlns:mvc="http://www.springframework.org/schema/mvc" 	xmlns:task="http://www.springframework.org/schema/task" 
+	xsi:schemaLocation="http://www.springframework.org/schema/jee
+	 http://www.springframework.org/schema/jee/spring-jee-3.0.xsd
+		http://www.springframework.org/schema/aop 
+		http://www.springframework.org/schema/aop/spring-aop-3.0.xsd
+		http://www.springframework.org/schema/mvc 
+		http://www.springframework.org/schema/mvc/spring-mvc-3.2.xsd
+		http://www.springframework.org/schema/beans 
+		http://www.springframework.org/schema/beans/spring-beans-3.0.xsd
+		http://www.springframework.org/schema/tx 
+		http://www.springframework.org/schema/tx/spring-tx-3.2.xsd
+		http://www.springframework.org/schema/context 
+		http://www.springframework.org/schema/context/spring-context-3.0.xsd
+        http://www.springframework.org/schema/task 
+        http://www.springframework.org/schema/task/spring-task-3.1.xsd">
+
+	<mvc:annotation-driven/>
+	
+	<!-- <context:annotation-config />
+	<context:component-scan base-package="com.sqisoft.iqs" /> -->
+	
+	<mvc:resources mapping="/resources/**" location="/resources/" />
+		
+	<task:annotation-driven scheduler="taskScheduler" />
+	<task:scheduler id="taskScheduler" />
+
+	<!-- 
+	TODO : 요거 풀기 전에 요청 URL 맞추고 (.do / .jsp 등등) login, refererlogin 등등 구현해야 됨. 관련 파일은 dev-config.xml, prd-config.xml, interceptors, loginController들
+	<mvc:interceptors>
+		<mvc:interceptor>
+			<mvc:mapping path="/refererLogin/login.do"/>
+			<bean class="com.sqisoft.iqs.interceptors.IQSRefererInterceptor"/>
+		</mvc:interceptor>
+		<mvc:interceptor>
+			<mvc:mapping path="/**"/>
+			<bean class="com.sqisoft.iqs.interceptors.SessionInterceptor"/>
+		</mvc:interceptor>
+	</mvc:interceptors> -->
+
+	<!-- Json으로 바꿔주는 view -->
+	<bean id="JSON"
+		class="org.springframework.web.servlet.view.json.MappingJacksonJsonView" />
+	<bean class="org.springframework.web.servlet.view.BeanNameViewResolver" />
+	<!-- Resolves views selected for rendering by @Controllers to .jsp resources 
+		in the /WEB-INF/views directory -->
+	<bean
+		class="org.springframework.web.servlet.view.InternalResourceViewResolver">
+		<property name="prefix" value="/WEB-INF/views/" />
+		<property name="suffix" value=".jsp" />
+	</bean>
+	
+	 <bean id ="multipartResolver" class="org.springframework.web.multipart.commons.CommonsMultipartResolver"> 
+		<property name="maxUploadSize" value="1000000000"/> </bean> 
+
+
+
+	<!-- TODO4. MyBatis SqlSessionFactoryBean, 와 SqlSessionTemplate 빈을 등록하는 
+		코드를 작성하시오 -->
+	
+</beans>

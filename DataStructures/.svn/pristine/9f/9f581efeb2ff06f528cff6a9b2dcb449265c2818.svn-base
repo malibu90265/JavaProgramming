@@ -1,0 +1,353 @@
+@import url(http://fonts.googleapis.com/earlyaccess/nanumgothic.css);
+
+body {
+	text-align: center;
+	width: 100%;
+	height: 100%;
+	font-family: 'Nanum Gothic';
+	background: #ffffff;
+}
+
+table {
+	*border-collapse: collapse; /* IE7 and lower */
+	border-spacing: 0;
+	width: 100%;
+	text-align: center;
+}
+
+/* deployRequirements.jsp : 리스트  */
+#deployRequirementsDiv {
+	margin-left: 150px;
+	width: 60%;
+	float: left;
+	clear: inherit;
+}
+/* deployRequirementsSearch.jsp : 검색 폼*/
+#deployRequirementsSearch {
+	margin-left: 150px;
+	margin-bottom: 20px;
+	width: 510px;
+	float: left;
+	clear: inherit;
+}
+
+/* deployRequirements.jsp : 입력 폼  */
+#deployRequirementsForm {
+	float: left;
+	margin-left: 70px;
+	clear: inherit;
+}
+
+/* deployRequirements.jsp : 소요배치, 전체미배치미투입 테이블  */
+#topTableName {
+	margin-top: 50px;
+	margin-left: 150px;
+	float: left;
+	text-align: left;
+	clear: inherit;
+}
+
+#topTableTd {
+	padding-bottom: 10px;
+}
+
+#topTableP {
+	text-align: left;
+	font-size: 43px;
+	line-height: 2%;
+}
+
+#bottomLine {
+	border-top: solid #ccc 1px;
+}
+
+/* button */
+#deployRequirementsInsertBtn, #deployRequirementsResetBtn,
+#deployRequirementsModifyBtn, #deployRequirementsDeleteBtn,
+#wholeBtn, #unBatch, #miTuip, #deployRequirementsSaveBtn,
+#deployRequirementsCancelBtn, #deployRequirementsBackBtn {
+	background-color: #dce9f9;
+	background-image: -webkit-gradient(linear, left top, left bottom, from(#ebf3fc), to(#dce9f9));
+	background-image: -webkit-linear-gradient(top, #ebf3fc, #dce9f9);
+	background-image: -moz-linear-gradient(top, #ebf3fc, #dce9f9);
+	background-image: -ms-linear-gradient(top, #ebf3fc, #dce9f9);
+	background-image: -o-linear-gradient(top, #ebf3fc, #dce9f9);
+	background-image: linear-gradient(top, #ebf3fc, #dce9f9);
+	-webkit-box-shadow: 0 1px 0 rgba(255, 255, 255, .8) inset;
+	-moz-box-shadow: 0 1px 0 rgba(255, 255, 255, .8) inset;
+	box-shadow: 0 1px 0 rgba(255, 255, 255, .8) inset;
+	border-top: none;
+	text-shadow: 0 1px 0 rgba(255, 255, 255, .5);
+	display:inline-block;
+	cursor:pointer;
+	color:#112b3e;
+	font-family: 'Nanum Gothic';
+	font-size:16px;
+	font-weight:bold;
+	padding:6px 10px;
+	text-decoration:none;
+	margin-left: 5px;
+}
+#deployRequirementsInsertBtn:hover, #deployRequirementsResetBtn:hover,
+#deployRequirementsModifyBtn:hover, #deployRequirementsDeleteBtn:hover,
+#wholeBtn:hover, #unBatch:hover, #miTuip:hover, #deployRequirementsSaveBtn:hover,
+#deployRequirementsCancelBtn:hover, #deployRequirementsBackBtn:hover   {
+	background:-webkit-gradient(linear, left top, left bottom, color-stop(0.05, #dce9f9), color-stop(1, #ebf3fc));
+	background:-moz-linear-gradient(top, #dce9f9 5%, #ebf3fc 100%);
+	background:-webkit-linear-gradient(top, #dce9f9 5%, #ebf3fc 100%);
+	background:-o-linear-gradient(top, #dce9f9 5%, #ebf3fc 100%);
+	background:-ms-linear-gradient(top, #dce9f9 5%, #ebf3fc 100%);
+	background:linear-gradient(to bottom, #dce9f9 5%, #ebf3fc 100%);
+	filter:progid:DXImageTransform.Microsoft.gradient(startColorstr='#dce9f9', endColorstr='#ebf3fc',GradientType=0);
+	background-color:#dce9f9;
+}
+#deployRequirementsInsertBtn:active, #deployRequirementsResetBtn:active,
+#deployRequirementsModifyBtn:active, #deployRequirementsDeleteBtn:active,
+#wholeBtn:active, #unBatch:active, #miTuip:active, #deployRequirementsSaveBtn:active,
+#deployRequirementsCancelBtn:active, #deployRequirementsBackBtn:active   {
+	position:relative;
+	top:1px;
+}
+
+
+/* Search Table */
+.search {
+	border: solid #ccc 1px;
+	width: 230px;
+	-moz-border-radius: 6px;
+	-webkit-border-radius: 6px;
+	border-radius: 6px;
+	-webkit-box-shadow: 0 1px 1px #ccc;
+	-moz-box-shadow: 0 1px 1px #ccc;
+	box-shadow: 0 1px 1px #ccc;
+}
+.search div {
+	float: left;
+}
+
+.search tr:hover {
+	background: #fbf8e9;
+	-o-transition: all 0.1s ease-in-out;
+	-webkit-transition: all 0.1s ease-in-out;
+	-moz-transition: all 0.1s ease-in-out;
+	-ms-transition: all 0.1s ease-in-out;
+	transition: all 0.1s ease-in-out;
+}
+
+.search td, .search th {
+	border-left: 1px solid #ccc;
+	border-top: 1px solid #ccc;
+	padding: 10px;
+	text-align: left;
+}
+
+.search th {
+	background-color: #dce9f9;
+	background-image: -webkit-gradient(linear, left top, left bottom, from(#ebf3fc), to(#dce9f9));
+	background-image: -webkit-linear-gradient(top, #ebf3fc, #dce9f9);
+	background-image: -moz-linear-gradient(top, #ebf3fc, #dce9f9);
+	background-image: -ms-linear-gradient(top, #ebf3fc, #dce9f9);
+	background-image: -o-linear-gradient(top, #ebf3fc, #dce9f9);
+	background-image: linear-gradient(top, #ebf3fc, #dce9f9);
+	-webkit-box-shadow: 0 1px 0 rgba(255, 255, 255, .8) inset;
+	-moz-box-shadow: 0 1px 0 rgba(255, 255, 255, .8) inset;
+	box-shadow: 0 1px 0 rgba(255, 255, 255, .8) inset;
+	border-top: none;
+	text-shadow: 0 1px 0 rgba(255, 255, 255, .5);
+}
+
+.search td:first-child, .search th:first-child {
+	border-left: none;
+}
+
+.search th:first-child {
+	-moz-border-radius: 6px 0 0 0;
+	-webkit-border-radius: 6px 0 0 0;
+	border-radius: 6px 0 0 0;
+}
+
+.search th:last-child {
+	-moz-border-radius: 0 6px 0 0;
+	-webkit-border-radius: 0 6px 0 0;
+	border-radius: 0 6px 0 0;
+}
+
+.search th:only-child {
+	-moz-border-radius: 6px 6px 0 0;
+	-webkit-border-radius: 6px 6px 0 0;
+	border-radius: 6px 6px 0 0;
+}
+
+.search tr:last-child td:first-child {
+	-moz-border-radius: 0 0 0 6px;
+	-webkit-border-radius: 0 0 0 6px;
+	border-radius: 0 0 0 6px;
+}
+
+.search tr:last-child td:last-child {
+	-moz-border-radius: 0 0 6px 0;
+	-webkit-border-radius: 0 0 6px 0;
+	border-radius: 0 0 6px 0;
+}
+
+/* list Table */
+.bordered {
+	border: solid #ccc 1px;
+	-moz-border-radius: 6px;
+	-webkit-border-radius: 6px;
+	border-radius: 6px;
+	-webkit-box-shadow: 0 1px 1px #ccc;
+	-moz-box-shadow: 0 1px 1px #ccc;
+	box-shadow: 0 1px 1px #ccc;
+}
+
+.bordered tr:hover {
+	background: #fbf8e9;
+	-o-transition: all 0.1s ease-in-out;
+	-webkit-transition: all 0.1s ease-in-out;
+	-moz-transition: all 0.1s ease-in-out;
+	-ms-transition: all 0.1s ease-in-out;
+	transition: all 0.1s ease-in-out;
+}
+
+.deployRequirementsRow {
+	cursor: pointer;
+}
+
+.deployRequirementsRow:hover {
+	background: #fbf8e9;
+}
+
+.bordered td, .bordered th {
+	border-left: 1px solid #ccc;
+	border-top: 1px solid #ccc;
+	padding: 10px;
+	text-align: left;
+}
+
+.bordered th {
+	background-color: #dce9f9;
+	background-image: -webkit-gradient(linear, left top, left bottom, from(#ebf3fc), to(#dce9f9));
+	background-image: -webkit-linear-gradient(top, #ebf3fc, #dce9f9);
+	background-image: -moz-linear-gradient(top, #ebf3fc, #dce9f9);
+	background-image: -ms-linear-gradient(top, #ebf3fc, #dce9f9);
+	background-image: -o-linear-gradient(top, #ebf3fc, #dce9f9);
+	background-image: linear-gradient(top, #ebf3fc, #dce9f9);
+	-webkit-box-shadow: 0 1px 0 rgba(255, 255, 255, .8) inset;
+	-moz-box-shadow: 0 1px 0 rgba(255, 255, 255, .8) inset;
+	box-shadow: 0 1px 0 rgba(255, 255, 255, .8) inset;
+	border-top: none;
+	text-shadow: 0 1px 0 rgba(255, 255, 255, .5);
+}
+
+.bordered td:first-child, .bordered th:first-child {
+	border-left: none;
+}
+
+.bordered th:first-child {
+	-moz-border-radius: 6px 0 0 0;
+	-webkit-border-radius: 6px 0 0 0;
+	border-radius: 6px 0 0 0;
+}
+
+.bordered th:last-child {
+	-moz-border-radius: 0 6px 0 0;
+	-webkit-border-radius: 0 6px 0 0;
+	border-radius: 0 6px 0 0;
+}
+
+.bordered th:only-child {
+	-moz-border-radius: 6px 6px 0 0;
+	-webkit-border-radius: 6px 6px 0 0;
+	border-radius: 6px 6px 0 0;
+}
+
+.bordered tr:last-child td:first-child {
+	-moz-border-radius: 0 0 0 6px;
+	-webkit-border-radius: 0 0 0 6px;
+	border-radius: 0 0 0 6px;
+}
+
+.bordered tr:last-child td:last-child {
+	-moz-border-radius: 0 0 6px 0;
+	-webkit-border-radius: 0 0 6px 0;
+	border-radius: 0 0 6px 0;
+}
+
+
+/* input Table */
+.inputbordered {
+	border: solid #ccc 1px;
+	-moz-border-radius: 6px;
+	-webkit-border-radius: 6px;
+	border-radius: 6px;
+	-webkit-box-shadow: 0 1px 1px #ccc;
+	-moz-box-shadow: 0 1px 1px #ccc;
+	box-shadow: 0 1px 1px #ccc;
+}
+
+.inputbordered tr:hover {
+	background: #fbf8e9;
+	-o-transition: all 0.1s ease-in-out;
+	-webkit-transition: all 0.1s ease-in-out;
+	-moz-transition: all 0.1s ease-in-out;
+	-ms-transition: all 0.1s ease-in-out;
+	transition: all 0.1s ease-in-out;
+}
+
+.inputbordered td, .inputbordered th {
+	border-left: 1px solid #ccc;
+	border-top: 1px solid #ccc;
+	padding: 10px;
+	text-align: left;
+}
+
+
+.inputbordered th {
+	background-color: #dce9f9;
+	background-image: -webkit-gradient(linear, left top, left bottom, from(#ebf3fc), to(#dce9f9));
+	background-image: -webkit-linear-gradient(top, #ebf3fc, #dce9f9);
+	background-image: -moz-linear-gradient(top, #ebf3fc, #dce9f9);
+	background-image: -ms-linear-gradient(top, #ebf3fc, #dce9f9);
+	background-image: -o-linear-gradient(top, #ebf3fc, #dce9f9);
+	background-image: linear-gradient(top, #ebf3fc, #dce9f9);
+	-webkit-box-shadow: 0 1px 0 rgba(255, 255, 255, .8) inset;
+	-moz-box-shadow: 0 1px 0 rgba(255, 255, 255, .8) inset;
+	box-shadow: 0 1px 0 rgba(255, 255, 255, .8) inset;
+	border-top: none;
+	text-shadow: 0 1px 0 rgba(255, 255, 255, .5);
+}
+
+.inputbordered td:first-child, .inputbordered th:first-child {
+	border-left: none;
+}
+
+.inputbordered th:first-child {
+	-moz-border-radius: 6px 0 0 0;
+	-webkit-border-radius: 6px 0 0 0;
+	border-radius: 6px 0 0 0;
+}
+
+.inputbordered th:last-child {
+	-moz-border-radius: 0 6px 0 0;
+	-webkit-border-radius: 0 6px 0 0;
+	border-radius: 0 6px 0 0;
+}
+
+.inputbordered th:only-child {
+	-moz-border-radius: 6px 6px 0 0;
+	-webkit-border-radius: 6px 6px 0 0;
+	border-radius: 6px 6px 0 0;
+}
+
+.inputbordered tr:last-child td:first-child {
+	-moz-border-radius: 0 0 0 6px;
+	-webkit-border-radius: 0 0 0 6px;
+	border-radius: 0 0 0 6px;
+}
+
+.inputbordered tr:last-child td:last-child {
+	-moz-border-radius: 0 0 6px 0;
+	-webkit-border-radius: 0 0 6px 0;
+	border-radius: 0 0 6px 0;
+}

@@ -1,0 +1,66 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xsi:schemaLocation="http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans.xsd">
+	
+	<bean id="hrController" class="com.sqisoft.iqs.hr.main.controller.HrController" >
+		<property name="outSalService" ref="outSalHistoryService" />
+		<property name="hrService" ref="hrService"/>
+	</bean>
+	
+	<bean id="empScheduleController" class="com.sqisoft.iqs.hr.emp.controller.EmpScheduleController">
+		<property name="empScheduleService" ref="empScheduleService"/>
+	</bean>
+	
+	<bean id="manPlaceController" class="com.sqisoft.iqs.hr.manplace.contorller.ManPlaceController">
+		<property name="manPlaceService" ref="manPlaceService"/>
+	</bean>
+
+	<bean id="outSalController" class="com.sqisoft.iqs.hr.outsal.controller.outSalhistoryController">
+		<property name="outSalHistoryService" ref="outSalHistoryService"/>
+	</bean>
+	
+	<bean id="pjNeedsController" class="com.sqisoft.iqs.hr.pj.needs.controller.PjNeedsController">
+		<property name="pjnService" ref="pjnService"/>
+	</bean>
+	
+	<bean id="pjPostingController" class="com.sqisoft.iqs.hr.pj.posting.controller.PjPostingController">
+		<property name="pjpostingService" ref="pjPostingService"/>
+		<property name="hrService" ref="hrService"/>
+		<property name="pjnService" ref="pjnService"/>
+		<property name="teamService" ref="teamServiceIF"/>
+	</bean>
+	
+	<bean id="candidateController" class="com.sqisoft.iqs.humanResource.candidate.controller.CandidateController">
+		<property name="candidateService" ref="candidateService" />
+	</bean>
+	
+	<!-- humanResource -->
+	<bean id="humanResourceController" class="com.sqisoft.iqs.humanResource.humanResource.controller.HumanResourceController">
+		<property name="humanResourceService" ref="humanResourceService" />
+		<property name="teamService" ref="teamService" />
+		<property name="totalService" ref="totalService"/> 
+	</bean>
+	<bean id="outHumanResourceController" class="com.sqisoft.iqs.humanResource.humanResource.controller.OutHumanResourceController">
+		<property name="humanResourceService" ref="humanResourceService"></property>
+	</bean>
+	
+	<!-- humanResourceUndecided -->
+	<bean id="undecidedController" class="com.sqisoft.iqs.humanResource.undecided.controller.UndecidedController">
+		<property name="undecidedService" ref="undecidedService"></property>
+		<property name="deployRequirementsService" ref="deployRequirementsService"></property>
+	</bean>
+	
+	<!-- hrPrice -->
+	<bean id="hrPriceController" class="com.sqisoft.iqs.humanResource.humanResource.controller.HRPriceController">
+		<property name="hrPriceService" ref="hrPriceService"/>
+		<property name="teamService" ref="teamService"/>
+	</bean>
+	
+	<!-- humanResource Estimate -->
+	<bean id="estiamteController" class="com.sqisoft.iqs.humanResource.estimate.controller.EstimateController">
+		<property name="estimateService" ref="estimateService"/>
+		<property name="humanResourceService" ref="humanResourceService"></property>
+	</bean>
+	
+</beans>

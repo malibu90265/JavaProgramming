@@ -1,0 +1,66 @@
+@page 
+        {
+            size: landscape;   /* auto is the current printer page size */
+            margin: 6px;  /* this affects the margin in the printer settings */
+        }
+DIV {page: narrow; }
+@media print {
+	
+	body {
+		
+		background-color: #ff80ff;
+		color: black;
+		font-size: 10pt;
+		text-align: center;
+		font-family: 'Nanum Gothic';
+		width: auto;
+		height: auto;
+	}
+
+	/* list Table */
+	.bordered {
+		background-color: #ff80ff;
+		width : 95%;
+	}
+	
+	.bordered th {
+	
+		background-color: #ff80ff;
+		
+	}
+	
+	.pp_done_plan {
+	width: 25%;
+	vertical-align: top;
+	text-align: left;
+	word-break:break-all;
+}
+
+.pp_done {
+	width: 25%;
+	vertical-align: top;
+	text-align: left;
+	word-break:break-all;
+}
+
+.pp_plan {
+	width: 25%;
+	vertical-align: top;
+	text-align: left;
+	word-break:break-all;
+}
+
+.pp_issue {
+	width: 25%;
+	vertical-align: top;
+	text-align: left;
+	word-break:break-all;
+}
+	
+
+	h1 {page-break-before: always;}
+	
+	#print, #title{
+		display: none;
+	}
+}

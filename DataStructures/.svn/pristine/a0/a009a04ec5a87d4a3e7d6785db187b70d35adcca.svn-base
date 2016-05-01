@@ -1,0 +1,88 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+							"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="costMapDAO">
+
+	<resultMap type="com.sqisoft.iqs.humanResource.costmap.vo.CostMapVO" id="costResultMap">
+		<result property="tm_name"			column="tm_name" />
+		<result property="pj_id"			column="pj_id" />
+		<result property="hr_position"		column="hr_position"/>
+		<result property="hr_grade"			column="hr_grade"/>
+		<result property="pd_name"			column="pd_name" />
+		<result property="pd_sq"			column="pd_sq" />
+		<result property="hp_mon_price"		column="hp_mon_price"/>
+		<result property="pd_start_date"	column="pd_start_date"/>
+		<result property="pd_end_date"		column="pd_end_date"/>
+		<result property="pd_ratio"			column="pd_ratio"/>
+		<result property="pd_mm"			column="pd_mm"/>
+		<result property="cost"				column="cost"/>
+		<result property="hr_company"		column="hr_company"/>
+		
+	</resultMap>
+
+	<select id="getCostmapList" parameterType="map" resultMap="costResultMap">
+		SELECT	pj_deploy.pj_id as pj_id
+				, human_resource.tm_id
+				, human_resource.hr_position as hr_position
+				, human_resource.hr_grade as hr_grade
+				, human_resource.hr_company as hr_company
+				, pj_deploy.pd_name as pd_name
+				, pj_deploy.pd_sq as pd_sq
+				, pj_deploy.pd_uprice as hp_mon_price
+				, pj_deploy.pd_start_date as pd_start_date
+				, pj_deploy.pd_end_date as pd_end_date
+				, pj_deploy.pd_ratio as pd_ratio
+				, pj_deploy.pd_mm as pd_mm
+				, pj_status.pj_status_name as pj_status
+		FROM	pj_deploy
+		LEFT	JOIN human_resource ON pj_deploy.pd_name = human_resource.hr_name
+		INNER	JOIN project ON pj_deploy.pj_id = project.pj_id
+		INNER JOIN pj_status ON pj_status.pj_status_id = project.pj_status
+		AND		project.pj_id = #{pj_id}
+		ORDER BY	project.pj_id ASC, IF(ISNULL(human_resource.hr_position), 1, 0), human_resource.hr_position,  pj_deploy.pd_uprice DESC;
+	</select>
+	
+	<select id="getHrUprice" parameterType="map" resultType="string">
+		SELECT hp.hp_mon_price
+		FROM human_resource h, hr_price hp
+		WHERE hp.hp_team = #{tm_id}
+		AND h.hr_position = hp.hp_position
+		AND h.hr_name = #{hr_name}
+	</select>
+	
+	<select id="get6M15price" resultType="string">
+		SELECT hp.hp_mon_price
+		FROM hr_price hp
+		WHERE hp.hp_team = "6M15"
+	</select>
+	
+	<update id="updateMM" parameterType="map">
+		UPDATE pj_deploy set pd_mm = #{pd_mm}
+		WHERE pd_name = #{hr_name}
+		AND pd_sq = #{pd_sq}
+		AND pj_id = #{pj_id}
+	</update>
+	
+	<update id="updatePjMMandCost" parameterType="map">
+		UPDATE project 
+		set pj_outsrc_cost = #{pj_out_mm_cost},
+			pj_direct = #{pj_emp_mm_cost},
+			pj_emp_mm = #{pj_emp_mm_sum},
+			pj_outEmp_mm = #{pj_out_mm_sum}
+		WHERE pj_id = #{pj_id}
+	</update>
+	
+	<update id="updateTmOutCost" parameterType="map">
+		UPDATE team set tm_out_mm_cost = #{tm_out_mm_cost}
+		WHERE tm_id = #{pj_id}
+	</update>
+	
+	<update id="updatePjDirectCost" parameterType="map">
+		UPDATE project 
+		set pj_direct = #{pj_emp_mm_cost},
+			pj_emp_mm = #{pj_emp_mm_sum},
+			pj_outEmp_mm = #{pj_out_mm_sum}
+		WHERE pj_id = #{pj_id}
+	</update>
+	
+</mapper>
