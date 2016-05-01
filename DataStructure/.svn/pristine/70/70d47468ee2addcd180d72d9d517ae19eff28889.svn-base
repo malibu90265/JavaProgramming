@@ -1,0 +1,44 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xsi:schemaLocation="http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans.xsd">
+	
+	<bean id="comentController" class="com.sqisoft.iqs.pf.coment.ComentController">
+		<property name="customer_service" ref="customerService"/>
+		<property name="project_service" ref="projectServiceIF"/>
+		<property name="team_service" ref="teamServiceIF"/>
+		<property name="weekend_service" ref="weekendService"/>
+		<property name="memberService" ref="memberService"/>
+	</bean>
+	
+	<bean id="customerController" class="com.sqisoft.iqs.pf.customer.controller.CustomerController">
+		<property name="customer_service" ref="customerService"/>
+		<property name="project_service" ref="projectServiceIF"/>
+		<property name="team_service" ref="teamServiceIF"/>
+		<property name="weekend_service" ref="weekendService"/>
+		<property name="memberService" ref="memberService"/>
+	</bean>
+	
+	<bean id="memberController" class="com.sqisoft.iqs.pf.member.controller.MemberContorller">
+		<property name="memberService" ref="memberService"/>
+		<property name="team_service" ref="teamServiceIF"/>
+	</bean>
+	
+	<bean id="project_Controller" class="com.sqisoft.iqs.pf.project.controller.ProjectController">
+		<property name="project_service" ref="projectServiceIF"/>
+		<property name="team_service" ref="teamServiceIF"/>
+		<property name="weekend_service" ref="weekendService"/>
+	</bean>
+	
+	<bean id="scheduleController" class="com.sqisoft.iqs.pf.schedule.controller.ScheduleController">
+		<property name="team_service" ref="teamServiceIF"/>
+		<property name="weekbudget_service" ref="weekBudgetService"/>
+	</bean>
+	
+	<bean id="teamController" class="com.sqisoft.iqs.pf.team.controller.TeamController">
+		<property name="project_service" ref="projectServiceIF"/>
+		<property name="weekend_service" ref="weekendService"/>
+		<property name="teamService" ref="teamServiceIF"/>
+	</bean>
+		
+</beans>

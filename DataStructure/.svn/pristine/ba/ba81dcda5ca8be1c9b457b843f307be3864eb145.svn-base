@@ -1,0 +1,163 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper
+	PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+	"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="teamDAO" >
+
+	<resultMap type="com.sqisoft.iqs.team.vo.TeamVO" id="teamResultMap">
+		<result property="tm_id"			column="tm_id"/>
+		<result property="tm_year"			column="tm_year"/>
+		<result property="tm_name"			column="tm_name"/>
+		<result property="tm_contract"		column="tm_contract"/>
+		<result property="tm_sales"			column="tm_sales"/>
+		<result property="tm_profit"		column="tm_profit"/>
+		<result property="tm_outsrc_cost"	column="tm_outsrc_cost"/>
+		<result property="tm_matl_cost"		column="tm_matl_cost"/>
+		<result property="tm_expnc_rate"	column="tm_expnc_rate"/>
+		<result property="tm_mm"			column="tm_mm"/>
+		<result property="tm_num"			column="tm_num"/>
+		<result property="tm_ind_lcost"		column="tm_ind_lcost"/>
+		<result property="tm_ind_expense"	column="tm_ind_expense"/>
+		<result property="tm_sqi_mm_cost"	column="tm_sqi_mm_cost"/>
+		<result property="tm_out_mm_cost"	column="tm_out_mm_cost"/>
+	</resultMap>
+
+	<select id="getTeamListByYear" parameterType="_int" resultMap="teamResultMap">
+		SELECT	*
+		FROM	team
+		WHERE	tm_year = #{year}
+	</select>
+
+
+	<!-- tm_year 추가 -->
+	<select id="getTeamInfo" parameterType="map" resultMap="teamResultMap">
+		SELECT	*
+		FROM	team
+		WHERE	tm_id = #{tm_id}
+		<if test="tm_year != null and tm_year != ''">
+		AND		tm_year = #{tm_year}
+		</if>	
+	</select>
+
+	<!-- 기본경비율 파악하기 위한 -->
+	<select id="getTeamPJInfo" parameterType="String" resultType="_float">
+		SELECT	tm_expnc_rate
+		FROM	team
+		WHERE	tm_id = #{tm_id}
+	</select>
+
+	<update id="modifyTeamInfo" parameterType="com.sqisoft.iqs.team.vo.TeamVO">
+		UPDATE	team
+		SET		tm_name = #{tm_name}
+				, tm_contract = #{tm_contract}
+				, tm_sales = #{tm_sales}
+				, tm_profit = #{tm_profit}
+				, tm_outsrc_cost = #{tm_outsrc_cost}
+				, tm_matl_cost = #{tm_matl_cost}
+				, tm_expnc_rate = #{tm_expnc_rate}
+				, tm_mm = #{tm_mm}
+				, tm_num = #{tm_num}
+				, tm_ind_lcost = #{tm_ind_lcost}
+				, tm_ind_expense = #{tm_ind_expense}
+				, tm_sqi_mm_cost = #{tm_sqi_mm_cost}
+				, tm_out_mm_cost = #{tm_out_mm_cost}
+		WHERE	tm_year = #{tm_year}
+		AND		tm_id = #{tm_id}
+	</update>
+
+	<delete id="deleteTeamInfo" parameterType="map">
+		DELETE
+		FROM	team
+		WHERE	tm_year = #{tm_year}
+		AND		tm_id = #{tm_id}
+	</delete>
+	
+	<select id="isTmName" parameterType="map" resultType="_int">
+		SELECT	COUNT(*)
+		FROM	team
+		WHERE	tm_year = #{tm_year}
+		AND		tm_name = #{tm_name}
+		<if test=" tm_id != '' and tm_id != null ">
+		AND		tm_id != #{tm_id}
+		</if>
+	</select>
+
+	<select id="checkDuplicate" parameterType="map" resultType="_int">
+		SELECT	COUNT(*)
+		FROM	team
+		WHERE	tm_id = #{tm_id}
+		AND		tm_year = #{tm_year}
+	</select>
+
+	<!-- tm_year List 검색 -->
+	<select id="getTeamInfoList" resultType="com.sqisoft.iqs.team.vo.TeamVO">
+		SELECT	tm_id
+				, tm_name
+				, tm_num
+				, tm_contract
+				, tm_sales
+				, tm_profit
+				, tm_outsrc_cost
+				, tm_matl_cost
+		FROM	team
+		WHERE	tm_year = #{tm_year}
+	</select>
+
+	<select id="getTeamInfo_settingList" parameterType="_int"  resultType="com.sqisoft.iqs.team.vo.TeamVO">
+		SELECT	*
+		FROM	team
+		WHERE	tm_year = #{year}
+	</select>
+
+	<insert id="putNewTeamDetail" parameterType="com.sqisoft.iqs.team.vo.TeamVO">
+		INSERT INTO	team	(	tm_id
+								, tm_year
+								, tm_name
+								, tm_contract
+								, tm_sales
+								, tm_profit
+								, tm_outsrc_cost
+								, tm_matl_cost
+								, tm_expnc_rate
+								, tm_mm
+								, tm_num
+								, tm_ind_lcost
+								, tm_ind_expense
+								, tm_sqi_mm_cost
+								, tm_out_mm_cost
+							)
+		VALUES				(	#{tm_id}
+								, #{tm_year}
+								, #{tm_name}
+								, #{tm_contract}
+								, #{tm_sales}
+								, #{tm_profit}
+								, #{tm_outsrc_cost}
+								, #{tm_matl_cost}
+								, #{tm_expnc_rate}
+								, #{tm_mm}
+								, #{tm_num}
+								, #{tm_ind_lcost}
+								, #{tm_ind_expense}
+								, #{tm_sqi_mm_cost}
+								, #{tm_out_mm_cost}
+							)
+	</insert>
+
+	<select id="getTeamListEmpStandBy" resultType="com.sqisoft.iqs.team.vo.TeamVO" parameterType="string">
+		SELECT	tm_id
+				, tm_name
+		FROM	team
+		WHERE	tm_year = YEAR(now())
+		ORDER	BY tm_id
+	</select>
+
+	<select id="getTeamCheckList" resultType="com.sqisoft.iqs.team.vo.TeamVO" parameterType="string">
+		SELECT	tm_id, tm_name 
+		FROM	team 
+		WHERE	tm_year = YEAR(now())
+		ORDER	BY tm_id
+	</select>
+
+</mapper>

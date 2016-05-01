@@ -1,0 +1,251 @@
+@import url(http://fonts.googleapis.com/earlyaccess/nanumgothic.css);
+
+/*  타이틀 */ 
+#pjStatusContentsTitle {
+	text-align: left;
+}
+
+table {
+	*border-collapse: collapse; /* IE7 and lower */
+	border-spacing: 0;
+	text-align: center;
+}
+
+#pjStatusListDiv {
+	height:330px;
+	clear: inherit;
+	float: left;
+}
+
+#pjStatusInputDiv {
+	margin-left: 20px;
+	clear: inherit;
+	float: left;
+}
+
+#bottomLine {
+	text-align:right;
+	border-top: solid #ccc 1px;
+}
+
+/* button */
+#pjStatusInsertBtn, #pjStatusResetBtn,
+#pjStatusModifyBtn, #pjStatusDeleteBtn {
+	background-color: #dce9f9;
+	background-image: -webkit-gradient(linear, left top, left bottom, from(#ebf3fc), to(#dce9f9));
+	background-image: -webkit-linear-gradient(top, #ebf3fc, #dce9f9);
+	background-image: -moz-linear-gradient(top, #ebf3fc, #dce9f9);
+	background-image: -ms-linear-gradient(top, #ebf3fc, #dce9f9);
+	background-image: -o-linear-gradient(top, #ebf3fc, #dce9f9);
+	background-image: linear-gradient(top, #ebf3fc, #dce9f9);
+	-webkit-box-shadow: 0 1px 0 rgba(255, 255, 255, .8) inset;
+	-moz-box-shadow: 0 1px 0 rgba(255, 255, 255, .8) inset;
+	box-shadow: 0 1px 0 rgba(255, 255, 255, .8) inset;
+	border-top: none;
+	text-shadow: 0 1px 0 rgba(255, 255, 255, .5);
+	display:inline-block;
+	cursor:pointer;
+	color:#112b3e;
+	font-family: 'Nanum Gothic';
+	font-size:16px;
+	font-weight:bold;
+	padding:6px 10px;
+	text-decoration:none;
+	margin-left: 5px;
+	cursor: pointer;
+}
+
+#pjStatusSaveBtn:HOVER, #pjStatusResetBtn:HOVER,
+#pjStatusModifyBtn:HOVER, #pjStatusDeleteBtn:HOVER {
+	cursor:pointer;
+	background:-webkit-gradient(linear, left top, left bottom, color-stop(0.05, #dce9f9), color-stop(1, #ebf3fc));
+	background:-moz-linear-gradient(top, #dce9f9 5%, #ebf3fc 100%);
+	background:-webkit-linear-gradient(top, #dce9f9 5%, #ebf3fc 100%);
+	background:-o-linear-gradient(top, #dce9f9 5%, #ebf3fc 100%);
+	background:-ms-linear-gradient(top, #dce9f9 5%, #ebf3fc 100%);
+	background:linear-gradient(to bottom, #dce9f9 5%, #ebf3fc 100%);
+	filter:progid:DXImageTransform.Microsoft.gradient(startColorstr='#dce9f9', endColorstr='#ebf3fc',GradientType=0);
+	background-color:#dce9f9;
+}
+
+#pjStatusSaveBtn:ACTIVE, #pjStatusResetBtn:ACTIVE,
+#pjStatusModifyBtn:ACTIVE, #pjStatusDeleteBtn:ACTIVE {
+	position:relative;
+	top:1px;
+}
+
+/* list Table */
+.pjStatusBordered {
+	table-layout:fixed;
+	border: solid #ccc 1px;
+	-moz-border-radius: 6px;
+	-webkit-border-radius: 6px;
+	border-radius: 6px;
+	-webkit-box-shadow: 0 1px 1px #ccc;
+	-moz-box-shadow: 0 1px 1px #ccc;
+	box-shadow: 0 1px 1px #ccc;
+}
+
+.pjStatusBordered tr:hover {
+	background: #fbf8e9;
+	-o-transition: all 0.1s ease-in-out;
+	-webkit-transition: all 0.1s ease-in-out;
+	-moz-transition: all 0.1s ease-in-out;
+	-ms-transition: all 0.1s ease-in-out;
+	transition: all 0.1s ease-in-out;
+}
+
+.pjStatusRow {
+	cursor: pointer;
+}
+
+.pjStatusRow:HOVER {
+	background: #fbf8e9;
+}
+
+.pjStatusBordered td, .pjStatusBordered th {
+	border-left: 1px solid #ccc;
+	border-top: 1px solid #c0c0c0;
+	padding: 10px;
+}
+
+.pjStatusBordered th {
+	width:160px;
+	background-color: #dce9f9;
+	background-image: -webkit-gradient(linear, left top, left bottom, from(#ebf3fc), to(#dce9f9));
+	background-image: -webkit-linear-gradient(top, #ebf3fc, #dce9f9);
+	background-image: -moz-linear-gradient(top, #ebf3fc, #dce9f9);
+	background-image: -ms-linear-gradient(top, #ebf3fc, #dce9f9);
+	background-image: -o-linear-gradient(top, #ebf3fc, #dce9f9);
+	background-image: linear-gradient(top, #ebf3fc, #dce9f9);
+	-webkit-box-shadow: 0 1px 0 rgba(255, 255, 255, .8) inset;
+	-moz-box-shadow: 0 1px 0 rgba(255, 255, 255, .8) inset;
+	box-shadow: 0 1px 0 rgba(255, 255, 255, .8) inset;
+	border-top: none;
+	text-shadow: 0 1px 0 rgba(255, 255, 255, .5);
+	text-align: center;
+}
+
+.pjStatusBordered td {
+	width:160px;
+	white-space: nowrap;
+	text-overflow:ellipsis;
+	overflow:hidden;
+	text-align: left;
+}
+
+.pjStatusBordered td:first-child, .pjStatusBordered th:first-child {
+	border-left: none;
+}
+
+.pjStatusBordered th:first-child {
+	-moz-border-radius: 6px 0 0 0;
+	-webkit-border-radius: 6px 0 0 0;
+	border-radius: 6px 0 0 0;
+}
+
+.pjStatusBordered th:last-child {
+	-moz-border-radius: 0 6px 0 0;
+	-webkit-border-radius: 0 6px 0 0;
+	border-radius: 0 6px 0 0;
+}
+
+.pjStatusBordered th:only-child {
+	-moz-border-radius: 6px 6px 0 0;
+	-webkit-border-radius: 6px 6px 0 0;
+	border-radius: 6px 6px 0 0;
+}
+
+.pjStatusBordered tr:last-child td:first-child {
+	-moz-border-radius: 0 0 0 6px;
+	-webkit-border-radius: 0 0 0 6px;
+	border-radius: 0 0 0 6px;
+}
+
+.pjStatusBordered tr:last-child td:last-child {
+	-moz-border-radius: 0 0 6px 0;
+	-webkit-border-radius: 0 0 6px 0;
+	border-radius: 0 0 6px 0;
+}
+
+.pjStatusBordered .pjStatusBorderedPI {
+	width: 150px;
+}
+
+
+/* input Table */
+.pjStatusInputbordered {
+	table-layout:fixed;
+	border: solid #ccc 1px;
+	-moz-border-radius: 6px;
+	-webkit-border-radius: 6px;
+	border-radius: 6px;
+	-webkit-box-shadow: 0 1px 1px #ccc;
+	-moz-box-shadow: 0 1px 1px #ccc;
+	box-shadow: 0 1px 1px #ccc;
+}
+
+.pjStatusInputbordered tr:hover {
+	background: #fbf8e9;
+	-o-transition: all 0.1s ease-in-out;
+	-webkit-transition: all 0.1s ease-in-out;
+	-moz-transition: all 0.1s ease-in-out;
+	-ms-transition: all 0.1s ease-in-out;
+	transition: all 0.1s ease-in-out;
+}
+
+.pjStatusInputbordered td, .pjStatusInputbordered th {
+	border-left: 1px solid #ccc;
+	border-top: 1px solid #ccc;
+	padding: 10px;
+}
+
+.pjStatusInputbordered th {
+	text-align:center;
+	background-color: #dce9f9;
+	background-image: -webkit-gradient(linear, left top, left bottom, from(#ebf3fc), to(#dce9f9));
+	background-image: -webkit-linear-gradient(top, #ebf3fc, #dce9f9);
+	background-image: -moz-linear-gradient(top, #ebf3fc, #dce9f9);
+	background-image: -ms-linear-gradient(top, #ebf3fc, #dce9f9);
+	background-image: -o-linear-gradient(top, #ebf3fc, #dce9f9);
+	background-image: linear-gradient(top, #ebf3fc, #dce9f9);
+	-webkit-box-shadow: 0 1px 0 rgba(255, 255, 255, .8) inset;
+	-moz-box-shadow: 0 1px 0 rgba(255, 255, 255, .8) inset;
+	box-shadow: 0 1px 0 rgba(255, 255, 255, .8) inset;
+	border-top: none;
+	text-shadow: 0 1px 0 rgba(255, 255, 255, .5);
+}
+
+.pjStatusInputbordered td:first-child, .pjStatusInputbordered th:first-child {
+	border-left: none;
+}
+
+.pjStatusInputbordered th:first-child {
+	-moz-border-radius: 6px 0 0 0;
+	-webkit-border-radius: 6px 0 0 0;
+	border-radius: 6px 0 0 0;
+}
+
+.pjStatusInputbordered th:last-child {
+	-moz-border-radius: 0 6px 0 0;
+	-webkit-border-radius: 0 6px 0 0;
+	border-radius: 0 6px 0 0;
+}
+
+.pjStatusInputbordered th:only-child {
+	-moz-border-radius: 6px 6px 0 0;
+	-webkit-border-radius: 6px 6px 0 0;
+	border-radius: 6px 6px 0 0;
+}
+
+.pjStatusInputbordered tr:last-child td:first-child {
+	-moz-border-radius: 0 0 0 6px;
+	-webkit-border-radius: 0 0 0 6px;
+	border-radius: 0 0 0 6px;
+}
+
+.pjStatusInputbordered tr:last-child td:last-child {
+	-moz-border-radius: 0 0 6px 0;
+	-webkit-border-radius: 0 0 6px 0;
+	border-radius: 0 0 6px 0;
+}

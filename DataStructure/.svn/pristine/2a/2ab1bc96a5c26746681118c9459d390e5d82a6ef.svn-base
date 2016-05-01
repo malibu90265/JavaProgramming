@@ -1,0 +1,21 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<!DOCTYPE properties SYSTEM "http://java.sun.com/dtd/properties.dtd">
+
+<properties>
+
+	<comment>Context Default Configuration</comment>
+
+    <!-- DB Instance  -->
+    <entry key="db.mysql.driver">com.mysql.jdbc.Driver</entry>
+    <entry key="db.mysql.site.url">jdbc:mysql://211.232.57.248:3306/iqsbz?zeroDateTimeBehavior=convertToNull</entry>
+    <entry key="db.mysql.site.username">iqsbz</entry>
+    <entry key="db.mysql.site.password">1111</entry>
+
+	<entry key="file.path.absoluteUploadPath">D:\\iqspf\\workspace\\iqs_pj\\src\\main\\webapp\\resources\\emp_photo\\</entry>
+    <entry key="file.path.relativeUploadPath">resources/emp_photo/</entry>
+    
+    <entry key="url.referer.login.pass">iqs.sqisoft.com|www.sqisoft.com</entry>
+	<entry key="url.access.login.pass">/login/login</entry>
+	
+</properties>

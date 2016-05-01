@@ -1,0 +1,34 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xsi:schemaLocation="http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans.xsd">
+	
+	<bean id="hrController" class="com.sqisoft.iqs.hr.main.controller.HrController" >
+		<property name="outSalService" ref="outSalHistoryService" />
+		<property name="hrService" ref="hrService"/>
+	</bean>
+	
+	<bean id="empScheduleController" class="com.sqisoft.iqs.hr.emp.controller.EmpScheduleController">
+		<property name="empScheduleService" ref="empScheduleService"/>
+	</bean>
+	
+	<bean id="manPlaceController" class="com.sqisoft.iqs.hr.manplace.contorller.ManPlaceController">
+		<property name="manPlaceService" ref="manPlaceService"/>
+	</bean>
+
+	<bean id="outSalController" class="com.sqisoft.iqs.hr.outsal.controller.outSalhistoryController">
+		<property name="outSalHistoryService" ref="outSalHistoryService"/>
+	</bean>
+	
+	<bean id="pjNeedsController" class="com.sqisoft.iqs.hr.pj.needs.controller.PjNeedsController">
+		<property name="pjnService" ref="pjnService"/>
+	</bean>
+	
+	<bean id="pjPostingController" class="com.sqisoft.iqs.hr.pj.posting.controller.PjPostingController">
+		<property name="pjpostingService" ref="pjPostingService"/>
+		<property name="hrService" ref="hrService"/>
+		<property name="pjnService" ref="pjnService"/>
+		<property name="teamService" ref="teamService"/>
+	</bean>
+	
+</beans>

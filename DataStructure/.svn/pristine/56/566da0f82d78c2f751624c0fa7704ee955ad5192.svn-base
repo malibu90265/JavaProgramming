@@ -1,0 +1,23 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xsi:schemaLocation="http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans.xsd">
+	
+	<bean id="basicInfoDAO" class="com.sqisoft.iqs.admin.basicinfo.dao.BasicInfoDAOImpl">
+		<property name="sqlSessionTemplate" ref="sqlSession"></property>
+	</bean>
+	
+	<bean id="basicInfoService" class="com.sqisoft.iqs.admin.basicinfo.service.BasicInfoServiceImpl">
+		<property name="basicInfoDAO" ref="basicInfoDAO"/>
+		<property name="humanResourceDAO" ref="humanResourceDAO"/>
+	</bean>
+	
+	<bean id="menuDAO" class="com.sqisoft.iqs.admin.menu.dao.impl.MenuDAOImpl">
+		<property name="sqlSessionTemplate" ref="sqlSession"></property>
+	</bean>
+	
+	<bean id="menuService" class="com.sqisoft.iqs.admin.menu.service.impl.MenuServiceImpl">
+		<property name="menuDAO" ref="menuDAO"/>
+	</bean>
+	
+</beans>

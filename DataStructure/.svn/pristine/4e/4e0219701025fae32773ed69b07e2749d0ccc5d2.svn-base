@@ -1,0 +1,73 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="empPjMapDAO">
+	
+	<resultMap type="com.sqisoft.iqs.humanResource.empPjMap.vo.EmpPjMapVO" id="empPjMap">
+		<result property="tm_id"			column="tm_id"/>
+		<result property="tm_name"			column="tm_name"/>
+		<result property="pj_id"			column="pj_id"/>
+		<result property="pj_start_date"	column="pj_start_date"/>
+		<result property="pj_end_date"		column="pj_end_date"/>
+		<result property="pd_name"			column="pd_name"/>
+		<result property="pd_start_date"	column="pd_start_date"/>
+		<result property="pd_end_date"		column="pd_end_date"/>
+		<result property="hr_position"		column="hr_position"/>
+		<result property="hr_job_skill"		column="hr_job_skill"/>
+		<result property="hr_division"		column="hr_division"/>
+	</resultMap>
+	
+	<resultMap type="com.sqisoft.iqs.humanResource.empPjMap.vo.ProjectCountVO" id="pjCountVO">
+		<result property="tm_id"			column="tm_id"/>
+		<result property="tm_name"		column="tm_name"/>
+		<result property="pj_id"			column="pj_id"/>
+		<result property="name_count"		column="name_count"/>
+		<result property="pj_start_date"		column="pj_start_date"/>
+		<result property="pj_end_date"			column="pj_end_date"/>
+	</resultMap>
+	
+	<select id="getCheckBoxValue" parameterType="map" resultMap="empPjMap">
+		SELECT  p.tm_id AS tm_id, 
+				p.pj_id AS pj_id, 
+		        p.pj_start_date AS pj_start_date, 
+		        p.pj_end_date AS pj_end_date, 
+		        pd.pd_name AS pd_name, 
+		        pd.pd_start_date AS pd_start_date,
+		        pd.pd_end_date AS pd_end_date,
+		        IFNULL(SUBSTRING( h.hr_grade , 2 , 3 ), "-") AS hr_position, 
+		        h.hr_job_skill AS hr_job_skill,
+        		IF( h.hr_company LIKE "%SQI%" , "직원" , "외주" ) AS hr_division
+		FROM	project p, human_resource h, pj_deploy pd
+		WHERE	p.tm_id = #{tm_id}
+		AND 	p.pj_id = pd.pj_id
+		AND 	h.hr_name = pd.pd_name
+		AND		pd.pd_end_date <![CDATA[>=]]>  SYSDATE()
+	</select>	
+	
+	<select id="getProject_GetCount" parameterType="String" resultMap="pjCountVO">
+		SELECT
+			pj.tm_id AS tm_id
+			, tm.tm_name AS tm_name
+			, pj.pj_id AS pj_id
+			, pj.pj_start_date AS pj_start_date
+			, pj.pj_end_date AS pj_end_date
+			, IFNULL(pjd.name_count , 0 ) AS name_count
+		FROM
+			project pj
+			LEFT JOIN team tm
+			ON pj.tm_id = tm.tm_id
+			LEFT JOIN (SELECT	pj_id
+								, COUNT(pd_name) AS name_count
+						FROM	pj_deploy
+						WHERE	pd_end_date <![CDATA[>=]]>  SYSDATE()
+						GROUP BY pj_id
+			) AS pjd
+			ON pj.pj_id = pjd.pj_id
+		WHERE	pj.tm_id = #{team_id}
+		AND		pj.pj_end_date <![CDATA[>=]]>  SYSDATE()
+		AND		name_count != 0
+	</select>
+	
+</mapper>
+
+
+

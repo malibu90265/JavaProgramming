@@ -1,0 +1,49 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper
+ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+ "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+ 
+<mapper namespace="empStandByDAO" >
+
+	<resultMap type="com.sqisoft.iqs.humanResource.empStandBy.vo.EmpStandByVO" id="empStandByMap">
+		<result property="hr_hire_date"		column="hr_hire_date" />
+		<result property="hr_quit_date"		column="hr_quit_date" />
+		<result property="hr_name"			column="hr_name" />
+		<result property="pj_name"			column="pj_name" />
+		<result property="tm_id"			column="tm_id" />
+		<result property="tm_name"			column="tm_name" />
+		<result property="hr_position"		column="hr_position" />
+		<result property="pj_id"			column="pj_id" />
+		<result property="pd_start_date"	column="pd_start_date" />
+		<result property="pd_end_date"		column="pd_end_date" />
+		<result property="startday_r"		column="startday_r" />
+		<result property="endday_r"			column="endday_r" />
+	</resultMap>
+
+	<select id="getEmpStandByTeamList" resultMap="empStandByMap"  parameterType="string">
+		SELECT	p.pj_name
+				, h.hr_name
+				, j.pj_id
+				, j.pd_name
+				, h.hr_position
+				, j.pd_end_date
+				, j.pd_start_date
+				, h.hr_hire_date
+				, h.hr_quit_date
+				, t.tm_id
+				, t.tm_name
+				, datediff(Last_day(pd_start_date),pd_start_date) startday_r
+				, datediff(pd_end_date,DATE_FORMAT(CONCAT(DATE_FORMAT(date_add(pd_end_date, INTERVAL + 0 month) ,'%Y-%m'),'-1'),'%Y-%m-%d'))+1 endday_r
+		FROM	pj_deploy j
+				, project p
+				, human_resource h
+				, team t
+		WHERE	t.tm_name = #{tm_id}
+		AND		j.pj_id = p.pj_id
+		AND		j.pd_name = h.hr_name
+		AND		(pd_start_date like concat('%',substring(now(),1,4),'%') OR pd_end_date like concat('%',substring(now(),1,4),'%')) 
+		AND		(hr_quit_date like concat('%',substring(now(),1,4),'%') OR hr_quit_date is null OR hr_quit_date ='0000-00-00')
+		ORDER	BY pd_name;
+	</select>
+	
+</mapper>
