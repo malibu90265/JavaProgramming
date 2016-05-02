@@ -1,8 +1,0 @@
-<?xml version="1.0" encoding="utf-8"?>
-<resources>
-
-    <string name="app_name">Sudoku_ex2</string>
-    <string name="take">take a picture!</string>
-	<string name="exit">exit!</string>
-    
-</resources>
