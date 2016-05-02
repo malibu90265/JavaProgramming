@@ -1,0 +1,541 @@
+@import url(http://fonts.googleapis.com/earlyaccess/nanumgothic.css);
+
+body {
+	font-family: "Nanum Gothic";
+	width : 100%;
+	margin : 0px 0px 0px 0px;
+	padding : 0px 0px 0px 0px;
+}
+
+/* 최상위 div */
+.container {
+	display: block;
+	text-align: center;
+	width: 100%;
+	padding-bottom:1.9em;
+	z-index: 10;
+	position: relative;
+	margin-bottom: -180px;
+}
+
+/* 하위 div : 내용 */
+.contents {
+	margin-top: 50px;
+	display: inline-block;
+	width : 90%;
+	min-width : 90%;
+}
+
+/* 하위 div : 왼쪽 */
+.leftContents {
+	float:left;
+	display: inline-block;
+	width : 46%;
+	clear: inherit;
+}
+/* 하위 div : 오른쪽 */
+.rightContents {
+	float:inherit;
+	display: inline-block;
+	text-align: center;
+	width : 46%;
+	clear: inherit;
+}
+
+/* 타이틀 */
+#contentsTitle {
+	font-size:30px;
+	text-align: left;
+}
+
+#topTableName {
+	margin-bottom: 0.2%;
+}
+/* 제목 */
+#topTableP {font-size:30px;}
+
+/* 사진 list */
+#humanResourceList {
+	margin-top: 20px;
+	width: 100%;
+	height: 70%;
+	overflow: scroll;
+}
+
+#humanResourceList img {
+	width: 18vh;
+	height: 18vh;
+	width: 18vm;
+	height: 18vm;
+	border-radius: 10px;
+	float:left;
+	clear:right;
+}
+
+#humanResourceTd div {
+	float:left;
+	padding-left: 20px;
+	clear:right;
+}
+
+
+/* 내용 div */
+#chart {
+	display: inline;
+	text-align: center;
+	width : 1600px;
+	min-width : 1600px;
+}
+
+/* 엑셀 버튼 */
+#ExcelExport {
+	float: right;
+	background: transparent;
+	border: none;
+	clear: inherit;
+	cursor: pointer;
+}
+
+#ExcelExport img {
+	width: 17px;
+	height: 17px;
+}
+
+/* 서브 제목 */
+#spanSubNameLeft {
+	float: left;
+	margin-bottom: 20px;
+	clear: right;
+}
+
+#spanSubNameRight {
+	float: right;
+	margin-bottom: 20px;
+	clear: inherit;
+}
+
+/* button */
+#bottomLine, #insertButtonClass {
+	margin-top: 15px;
+	margin-right: 10px;
+}
+
+/* insert/detail */
+#humanResourceProjectHistoryBtn {
+	background-color: #dce9f9;
+	background-image: -webkit-gradient(linear, left top, left bottom, from(#ebf3fc), to(#dce9f9));
+	background-image: -webkit-linear-gradient(top, #ebf3fc, #dce9f9);
+	background-image: -moz-linear-gradient(top, #ebf3fc, #dce9f9);
+	background-image: -ms-linear-gradient(top, #ebf3fc, #dce9f9);
+	background-image: -o-linear-gradient(top, #ebf3fc, #dce9f9);
+	background-image: linear-gradient(top, #ebf3fc, #dce9f9);
+	-webkit-box-shadow: 0 1px 0 rgba(255, 255, 255, .8) inset;
+	-moz-box-shadow: 0 1px 0 rgba(255, 255, 255, .8) inset;
+	box-shadow: 0 1px 0 rgba(255, 255, 255, .8) inset;
+	float: left;
+	clear: inherit;
+	padding: 10px 20px;
+	position: inherit;
+	height: 29px;
+	text-shadow: 0 1px 0 rgba(255, 255, 255, .5);
+	text-align: center;
+	text-decoration:none;
+	display:inline-block;
+	cursor:pointer;
+	color:#112b3e;
+	vertical-align: text-bottom;
+	font-family: 'Nanum Gothic';
+	font-size:16px;
+	font-weight:bold;
+	margin-top: 18px;
+	margin-left: 10px;
+}
+#humanResourceProjectHistoryBtn:hover {
+	background:-webkit-gradient(linear, left top, left bottom, color-stop(0.05, #dce9f9), color-stop(1, #ebf3fc));
+	background:-moz-linear-gradient(top, #dce9f9 5%, #ebf3fc 100%);
+	background:-webkit-linear-gradient(top, #dce9f9 5%, #ebf3fc 100%);
+	background:-o-linear-gradient(top, #dce9f9 5%, #ebf3fc 100%);
+	background:-ms-linear-gradient(top, #dce9f9 5%, #ebf3fc 100%);
+	background:linear-gradient(to bottom, #dce9f9 5%, #ebf3fc 100%);
+	filter:progid:DXImageTransform.Microsoft.gradient(startColorstr='#dce9f9', endColorstr='#ebf3fc',GradientType=0);
+	background-color:#dce9f9;
+}
+#humanResourceProjectHistoryBtn:active {
+	position:relative;
+	top:1px;
+}
+
+#humanResourceInsertBtn
+, #humanResourceDeleteBtn
+, #humanResourceResetBtn
+, #humanResourceModifyBtn
+, #estimationModifyBtn {
+	background-color: #dce9f9;
+	background-image: -webkit-gradient(linear, left top, left bottom, from(#ebf3fc), to(#dce9f9));
+	background-image: -webkit-linear-gradient(top, #ebf3fc, #dce9f9);
+	background-image: -moz-linear-gradient(top, #ebf3fc, #dce9f9);
+	background-image: -ms-linear-gradient(top, #ebf3fc, #dce9f9);
+	background-image: -o-linear-gradient(top, #ebf3fc, #dce9f9);
+	background-image: linear-gradient(top, #ebf3fc, #dce9f9);
+	-webkit-box-shadow: 0 1px 0 rgba(255, 255, 255, .8) inset;
+	-moz-box-shadow: 0 1px 0 rgba(255, 255, 255, .8) inset;
+	box-shadow: 0 1px 0 rgba(255, 255, 255, .8) inset;
+	float: right;
+	clear: left;
+	padding: 10px 20px;
+	position: inherit;
+	height: 29px;
+	text-shadow: 0 1px 0 rgba(255, 255, 255, .5);
+	text-align: center;
+	text-decoration:none;
+	display:inline-block;
+	cursor:pointer;
+	color:#112b3e;
+	vertical-align: text-bottom;
+	font-family: 'Nanum Gothic';
+	font-size:16px;
+	font-weight:bold;
+	margin-top: 18px;
+	margin-left: 10px;
+}
+#humanResourceInsertBtn:hover
+#humanResourceModifyBtn:hover,
+, #humanResourceDeleteBtn:hover
+, #humanResourceResetBtn:hover
+, #estimationModifyBtn:hover {
+	background:-webkit-gradient(linear, left top, left bottom, color-stop(0.05, #dce9f9), color-stop(1, #ebf3fc));
+	background:-moz-linear-gradient(top, #dce9f9 5%, #ebf3fc 100%);
+	background:-webkit-linear-gradient(top, #dce9f9 5%, #ebf3fc 100%);
+	background:-o-linear-gradient(top, #dce9f9 5%, #ebf3fc 100%);
+	background:-ms-linear-gradient(top, #dce9f9 5%, #ebf3fc 100%);
+	background:linear-gradient(to bottom, #dce9f9 5%, #ebf3fc 100%);
+	filter:progid:DXImageTransform.Microsoft.gradient(startColorstr='#dce9f9', endColorstr='#ebf3fc',GradientType=0);
+	background-color:#dce9f9;
+}
+#humanResourceInsertBtn:active
+, #humanResourceDeleteBtn:active
+, #humanResourceResetBtn:active
+, #humanResourceModifyBtn:active
+, #estimationModifyBtn:active {
+	position:relative;
+	top:1px;
+}
+
+/* list Table */
+.bordered {
+	text-align: center;
+	line-height: 1px;
+	table-layout: fixed;
+	/* padding-left: 30px; */
+}
+
+.bordered table {
+	width: 100%;
+	border: dotted 1px #ebebeb;
+}
+
+.bordered tr:hover {
+	background: #fbf8e9;
+	-o-transition: all 0.1s ease-in-out;
+	-webkit-transition: all 0.1s ease-in-out;
+	-moz-transition: all 0.1s ease-in-out;
+	-ms-transition: all 0.1s ease-in-out;
+	transition: all 0.1s ease-in-out;
+}
+
+.bordered td, .bordered th {
+	height: 27px;
+	padding: 2px 8px;
+}
+
+.bordered td {
+	text-align: left;
+}
+
+.bordered td select {
+	width: 100%;
+}
+
+.bordered th {
+	background-color: #dce9f9;
+	background-image: -webkit-gradient(linear, left top, left bottom, from(#ebf3fc), to(#dce9f9));
+	background-image: -webkit-linear-gradient(top, #ebf3fc, #dce9f9);
+	background-image: -moz-linear-gradient(top, #ebf3fc, #dce9f9);
+	background-image: -ms-linear-gradient(top, #ebf3fc, #dce9f9);
+	background-image: -o-linear-gradient(top, #ebf3fc, #dce9f9);
+	background-image: linear-gradient(top, #ebf3fc, #dce9f9);
+	-webkit-box-shadow: 0 1px 0 rgba(255, 255, 255, .8) inset;
+	-moz-box-shadow: 0 1px 0 rgba(255, 255, 255, .8) inset;
+	box-shadow: 0 1px 0 rgba(255, 255, 255, .8) inset;
+	border-top: none;
+	text-shadow: 0 1px 0 rgba(255, 255, 255, .5);
+}
+
+.bordered td:first-child, .bordered th:first-child {
+	border-left: none;
+}
+
+.bordered th:first-child {
+	-moz-border-radius: 6px 0 0 0;
+	-webkit-border-radius: 6px 0 0 0;
+	border-radius: 6px 0 0 0;
+}
+
+.bordered th:last-child {
+	-moz-border-radius: 0 6px 0 0;
+	-webkit-border-radius: 0 6px 0 0;
+	border-radius: 0 6px 0 0;
+}
+
+.bordered th:only-child {
+	-moz-border-radius: 6px 6px 0 0;
+	-webkit-border-radius: 6px 6px 0 0;
+	border-radius: 6px 6px 0 0;
+}
+
+.bordered tr:last-child td:first-child {
+	-moz-border-radius: 0 0 0 6px;
+	-webkit-border-radius: 0 0 0 6px;
+	border-radius: 0 0 0 6px;
+}
+
+.bordered tr:last-child td:last-child {
+	-moz-border-radius: 0 0 6px 0;
+	-webkit-border-radius: 0 0 6px 0;
+	border-radius: 0 0 6px 0;
+}
+
+/*	이미지 선택 
+	ISSUE IE10에서 작동 안 함
+	chrome, IE5~7, Netscape, IE8, IE8 순으로 설정 */
+.selected {
+	-webkit-filter : opacity(.5);
+	filter : alpha(opacity=50);
+	-moz-opacity : 0.50;
+	-ms-filter : progid:DXImageTransform.Microsoft.Alpha(Opacity=50);
+	filter : progid:DXImageTransform.Microsoft.Alpha(Opacity=50);
+}
+
+/* pm평가 등록/조회 >> 평가 설명 */
+#descTd {width:570px;}
+
+/* 검색 */
+.search {
+	table-layout: fixed;
+	border: solid #ccc 1px;
+	margin-bottom: 20px;
+	-moz-border-radius: 6px;
+	-webkit-border-radius: 6px;
+	border-radius: 6px;
+	-webkit-box-shadow: 0 1px 1px #ccc;
+	-moz-box-shadow: 0 1px 1px #ccc;
+	box-shadow: 0 1px 1px #ccc;
+}
+
+.search td, .search th {
+	border-left: 1px solid #ccc;
+	border-top: 1px solid #ccc;
+	text-align: left;
+}
+
+.search td {
+	padding: 10px;
+}
+
+.search th {
+	text-align: center;
+}
+
+.search td select, .search td input[type="text"] {
+	padding: 0 5px;
+}
+
+.search th {
+	background-color: #dce9f9;
+	background-image: -webkit-gradient(linear, left top, left bottom, from(#ebf3fc), to(#dce9f9));
+	background-image: -webkit-linear-gradient(top, #ebf3fc, #dce9f9);
+	background-image: -moz-linear-gradient(top, #ebf3fc, #dce9f9);
+	background-image: -ms-linear-gradient(top, #ebf3fc, #dce9f9);
+	background-image: -o-linear-gradient(top, #ebf3fc, #dce9f9);
+	background-image: linear-gradient(top, #ebf3fc, #dce9f9);
+	-webkit-box-shadow: 0 1px 0 rgba(255, 255, 255, .8) inset;
+	-moz-box-shadow: 0 1px 0 rgba(255, 255, 255, .8) inset;
+	box-shadow: 0 1px 0 rgba(255, 255, 255, .8) inset;
+	border-top: none;
+	text-shadow: 0 1px 0 rgba(255, 255, 255, .5);
+}
+
+.search td:first-child, .search th:first-child {
+	border-left: none;
+}
+
+.search th:first-child {
+	-moz-border-radius: 6px 0 0 0;
+	-webkit-border-radius: 6px 0 0 0;
+	border-radius: 6px 0 0 0;
+}
+
+.search th:last-child {
+	-moz-border-radius: 0 6px 0 0;
+	-webkit-border-radius: 0 6px 0 0;
+	border-radius: 0 6px 0 0;
+}
+
+.search th:only-child {
+	-moz-border-radius: 6px 6px 0 0;
+	-webkit-border-radius: 6px 6px 0 0;
+	border-radius: 6px 6px 0 0;
+}
+
+.search tr:last-child td:first-child {
+	-moz-border-radius: 0 0 0 6px;
+	-webkit-border-radius: 0 0 0 6px;
+	border-radius: 0 0 0 6px;
+}
+
+.search tr:last-child td:last-child {
+	-moz-border-radius: 0 0 6px 0;
+	-webkit-border-radius: 0 0 6px 0;
+	border-radius: 0 0 6px 0;
+}
+
+/* input Table */
+.inputbordered {
+	border: solid #ccc 1px;
+	-moz-border-radius: 6px;
+	-webkit-border-radius: 6px;
+	border-radius: 6px;
+	-webkit-box-shadow: 0 1px 1px #ccc;
+	-moz-box-shadow: 0 1px 1px #ccc;
+	box-shadow: 0 1px 1px #ccc;
+}
+
+.inputbordered tr:hover {
+	background: #fbf8e9;
+	-o-transition: all 0.1s ease-in-out;
+	-webkit-transition: all 0.1s ease-in-out;
+	-moz-transition: all 0.1s ease-in-out;
+	-ms-transition: all 0.1s ease-in-out;
+	transition: all 0.1s ease-in-out;
+}
+
+.inputbordered td, .inputbordered th {
+	border-left: 1px solid #ccc;
+	border-top: 1px solid #ccc;
+	padding: 10px;
+	text-align: left;
+}
+
+
+.inputbordered th {
+	background-color: #dce9f9;
+	background-image: -webkit-gradient(linear, left top, left bottom, from(#ebf3fc), to(#dce9f9));
+	background-image: -webkit-linear-gradient(top, #ebf3fc, #dce9f9);
+	background-image: -moz-linear-gradient(top, #ebf3fc, #dce9f9);
+	background-image: -ms-linear-gradient(top, #ebf3fc, #dce9f9);
+	background-image: -o-linear-gradient(top, #ebf3fc, #dce9f9);
+	background-image: linear-gradient(top, #ebf3fc, #dce9f9);
+	-webkit-box-shadow: 0 1px 0 rgba(255, 255, 255, .8) inset;
+	-moz-box-shadow: 0 1px 0 rgba(255, 255, 255, .8) inset;
+	box-shadow: 0 1px 0 rgba(255, 255, 255, .8) inset;
+	border-top: none;
+	text-shadow: 0 1px 0 rgba(255, 255, 255, .5);
+	text-align: center;
+}
+
+.inputbordered td:first-child, .inputbordered th:first-child {
+	border-left: none;
+}
+
+.inputbordered th:first-child {
+	-moz-border-radius: 6px 0 0 0;
+	-webkit-border-radius: 6px 0 0 0;
+	border-radius: 6px 0 0 0;
+}
+
+.inputbordered th:last-child {
+	-moz-border-radius: 0 6px 0 0;
+	-webkit-border-radius: 0 6px 0 0;
+	border-radius: 0 6px 0 0;
+}
+
+.inputbordered th:only-child {
+	-moz-border-radius: 6px 6px 0 0;
+	-webkit-border-radius: 6px 6px 0 0;
+	border-radius: 6px 6px 0 0;
+}
+
+.inputbordered tr:last-child td:first-child {
+	-moz-border-radius: 0 0 0 6px;
+	-webkit-border-radius: 0 0 0 6px;
+	border-radius: 0 0 0 6px;
+}
+
+.inputbordered tr:last-child td:last-child {
+	-moz-border-radius: 0 0 6px 0;
+	-webkit-border-radius: 0 0 6px 0;
+	border-radius: 0 0 6px 0;
+}
+
+
+/* pj 수행이력  popup */
+
+.layer {
+	display: block;
+	position: fixed;
+	_position: absolute;
+	top: 0;
+	left: 0;
+	width: 100%;
+	height: 100%;
+	z-index: 1000;
+}
+
+.layer .bg {
+	position: absolute;
+	top: 0;
+	left: 0;
+	width: 100%;
+	height: 100%;
+	background: #000;
+	opacity: .3;
+	filter: alpha(opacity = 30);
+}
+
+.layer .pop-layer {
+	display: block;
+}
+
+.pop-layer {
+	display: none;
+	position: absolute;
+	top: 50%;
+	left: 50%;
+	width: 1200px;
+	height: auto;
+	background-color: #fff;
+	border: none;
+	z-index: 10;
+}
+
+.pop-layer .pop-container {
+	text-align: center;
+	padding: 20px 25px 50px 20px;
+}
+
+.pop-conts {
+	text-align: center;
+}
+
+.pop-conts table {
+	width: 100%;
+}
+
+.pop-layer .btn-r {
+	width: 100%;
+	margin: 10px 0 10px;
+	padding-top: 10px;
+	border-top: 1px solid #DDD;
+	text-align: right;
+}
+

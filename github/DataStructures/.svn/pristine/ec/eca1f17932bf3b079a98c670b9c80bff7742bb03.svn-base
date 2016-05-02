@@ -1,0 +1,44 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+  PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+  "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="commonDAO">
+
+	<select id="getCodeInfo" parameterType="map" resultType="map">
+		SELECT *
+		FROM code
+		WHERE 1=1
+		<if test="code != null or code != ''">
+			AND groupcd = #{code}
+		</if>
+		ORDER BY ord asc
+	</select>
+
+	<select id="getTeamInfo" resultType="map">
+		SELECT team_id, team_name
+		FROM team
+	</select>
+	
+	<!-- mainPage 주소 가져오기 -->
+	<resultMap	type="com.sqisoft.iqs.common.vo.CommonVO"
+				id="commonMap">
+		<result	property="id"			column="id" />
+		<result	property="bigClass"		column="bigclass" />
+		<result	property="middleClass"	column="middleclass" />
+		<result	property="smallClass"	column="smallclass" />
+		<result	property="address"		column="address" />
+		<result	property="middleName"	column="middlename" />
+		<result	property="smallName"	column="smallname" />
+	</resultMap>
+	<select		id="mainPageList"		resultMap="commonMap">
+		SELECT	id
+				, bigclass
+				, middleclass
+				, smallclass
+				, address
+				, middlename
+				, smallname 
+		FROM	main_category
+	</select>
+
+</mapper>

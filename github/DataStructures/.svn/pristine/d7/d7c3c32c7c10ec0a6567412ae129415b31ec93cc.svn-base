@@ -1,0 +1,208 @@
+@import url(http://fonts.googleapis.com/earlyaccess/nanumgothic.css);
+
+/* SQI소프트의 영업관리 시스템 IQSbz, 정보, 손익 관리 시스템 입니다. */
+#tips, #tips li {
+	background: #FFFFFF;
+	opacity: 0.7;
+	text-align: center;
+	list-style: none;
+	margin-top: 0;
+	}
+#tips{
+	font-family: 'Nanum Gothic';
+	font-size: 24px;
+}
+#tips li{
+	padding-top: 8px;
+	padding-bottom: 8px;
+	display:none; /* hide the items at first only */
+}
+
+/* login box */
+.login {
+    -moz-box-sizing: border-box;
+    background: none repeat scroll 0 0 #FFFFFF;
+    border-radius: 0 0 0 0;
+    box-shadow: 0 0 0 1px rgba(0, 0, 0, 0.05), 0 0 0 0 rgba(0, 0, 0, 0.1);
+    margin: 0 auto;
+    padding: 15px 0 60px 0;
+    opacity: 0.9;
+    width: 100%;
+    text-align: center;
+    line-height:48px;
+    display: -webkit-flex; /* Safari */
+    -webkit-align-items: center; /* Safari 7.0+ */
+    display: flex;
+    align-items: center;
+    vertical-align:middle;
+}
+
+/* IQSbz logo */
+.left-logo{
+	display: inline;
+	width:30%;
+  	text-align:center;
+}
+
+/* logo 브라우져 줄여도 안겹치게 하기 위해서*/
+.img{
+	width:60%;
+}
+
+/* login 감싸는 가운데쪽 큰 div */
+.center-login{
+	position:relative;
+	left:0;
+	display: inline;
+	width:40%;
+	text-align:center;
+	margin-left:30px;
+  	margin-right:30px;
+}
+
+/* 오늘의 날짜 */
+.rignt-date{
+	display: inline;
+	width:30%;
+	color:#000000;
+	font-size:28px;
+	text-align:center;
+	
+}
+
+/* login 박스 안에 있는 input box들 */
+.login_box{
+	position:relative;
+	align:rignt;
+}
+.login_input {
+	display: inline-block;
+	width: 500px;
+}
+
+/* login form */
+#login-form {
+    margin-bottom: 0;
+    margin: 0 0 26px;
+}
+
+#login-form h1 {
+    color: #546673;
+    font-family: "Nanum Gothic";
+    font-weight: 600;
+    margin-bottom: 30px;
+    text-align: center;
+}
+
+/* email input */
+input[type="text"] {
+    transition: background 0.5s ease 0s, border-color 0.5s ease 0s;
+    font-size: 16px;
+    line-height: 26px;
+    color: #525355;
+    text-align: center;
+    display: inline-block;
+    vertical-align: middle;
+    width: 65%;
+    height: 44.2px;
+    margin: 0;
+    margin-bottom: 20px;
+    padding: 4px 6px;
+    border: 1px solid #A3ACB8;
+    border-radius: 3px 3px 3px 3px;
+    box-shadow: 0 2px 0 rgba(0, 0, 0, 0.08) inset;
+}
+
+#pMail {
+    font-size: 20px;
+    color: #525355;
+    display: inline-block;
+    vertical-align: super;
+    text-align: center;
+    width: 150px;
+}
+
+/* password input */
+input[type="password"] {
+    transition: background 0.5s ease 0s, border-color 0.5s ease 0s;
+    font-size: 16px;
+    line-height: 26px;
+    color: #525355;
+    text-align: center;
+    display: inline-block;
+    vertical-align: middle;
+    width: 97%;
+    height: 44.2px;
+    margin: 0;
+    margin-bottom: 20px;
+    padding: 4px 6px;
+    border: 1px solid #A3ACB8;
+    border-radius: 3px 3px 3px 3px;
+    box-shadow: 0 2px 0 rgba(0, 0, 0, 0.08) inset;
+}
+
+/* login button */
+button.submit {
+    background: none repeat scroll 0 0 #2E9FFF;
+    border: medium none;
+    border-radius: 5px 5px 5px 5px;
+    box-shadow: none;
+    color: #FFFFFF;
+    font-size: 16px;
+    font-weight: normal;
+    line-height: 26px;
+    float: left;
+    padding: 8px 12px;
+    width: 100%;
+}
+button, input[type="button"], input[type="submit"] {
+    cursor: pointer;
+}
+
+/* 슬라이딩부분 큰 div*/
+.slider{
+	position:relative;
+	top:20px;
+	align:middle;
+	width:100%;
+	left:0;
+	right:0;
+	text-align:center;
+}
+/* 제일 아래 있는 로고 */
+.footer{
+	position:fixed;
+	bottom:20px;
+	right:20px;
+}
+
+
+/* �쟾泥� body */
+body:before {
+    content: "";
+    height: 67%;
+    left: 0;
+    position: absolute;
+    right: 0;
+    top: 0;
+    width: 100%;
+    z-index: -1;
+}
+
+body {
+    background: url("/resources/images/blue-sky.jpg") no-repeat center center fixed; 
+	-webkit-background-size: cover;
+	-moz-background-size: cover;
+	-o-background-size: cover;
+	background-size: cover;
+    width: 100%;
+    height: 100%;
+    margin: 0;
+    padding: 0;
+    position: relative;
+    z-index: 30;
+}
+
+* {
+    -moz-box-sizing: border-box;
+}

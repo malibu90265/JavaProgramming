@@ -1,0 +1,172 @@
+body {
+	font-family: "NanumGothic", "Dotum", "Gulim", "Arial", sans-serif;
+	width : 100%;
+	margin : 0px 0px 0px 0px;
+	padding : 0px 0px 0px 0px;
+	min-width : 1600px;
+}
+
+.header {
+	width : 100%;
+	height : 70px;
+	background-color:#02458B;
+}
+
+.header_area {
+	width : 90%;
+	height : 100%;
+	left : 5%;
+	position : relative;
+}
+
+.container {
+	width : 90%;
+	min-height : 820px;
+	left : 5%;
+	position : relative;
+}
+
+.header_area img {
+	top : 8px;
+	position: relative;
+}
+
+.header_area div {
+	display : inline-block;
+	height : 100%;
+}
+
+.header_area h1 {
+	display : inline-block;
+	color : white;
+	margin-left : 30px;
+}
+
+.footer {
+	padding : 5px 0px 5px 0px;
+	background-color: #d6d6d6;
+	text-align: center;
+	font-size : 12px;
+	color: #777777;
+}
+
+
+#mainNavContainer {
+	margin-left : 30px;
+	height : 100%;
+}
+#mainNavContainer .mainNav {
+	display : inline-block;
+	background-color : #02458B;
+	font-size : 30px;
+	color : white;
+	width : 300px;
+	text-align : center;
+	line-height : 70px;
+	cursor:pointer;
+}
+
+#mainNavContainer a {
+	text-decoration : none;
+	color : white;
+}
+
+#mainNavContainer .mainNav:hover {
+	background-color : rgb(120, 98, 255);
+}
+
+#mainNavContainer .mainNav.navSelected {
+	background-color : rgb(120, 98, 255);
+}
+
+#subNavContainer {
+	float: left;
+	margin-right: 10px;
+	width : 150px;
+	overflow : hidden;
+}
+
+#subNavContainer .subNavContainerChild .subNav{
+	width : 100%;
+	height : 30px;
+	padding : 17px 0px 0px 17px;
+	color : white;
+	font-weight: bold;
+	border-bottom: 1px solid white;
+	background-color : #2C91FA;
+	cursor:pointer;
+}
+/* 
+#subNavContainer a {
+	text-decoration : none;
+	color : white;
+}
+
+#subNavContainer a:hover {
+	color : #E8FF22;
+}
+ */
+#subNavContainer .subNavContainerChild .subNav:hover{
+	background-color : #77B7FA;
+	color : #E8FF22;
+}
+
+#subNavContainer .subNavContainerChild .subNav.navSelected{
+	background-color : #77B7FA;
+	color : #E8FF22;
+}
+
+.contents {
+	width: 1580px;
+	vertical-align: top;
+}
+
+/* #subNavContainer .subNavD2{
+	width : 100%;
+	height : 20px;
+	padding : 5px 0px 5px 25px;
+	color : white;
+	font-weight: bold;
+	background-color : #CDCDCD;
+	font-size : 15px;
+} 
+
+#subNavContainer .subNavD2:hover{
+	color : #2C91FA;
+}
+
+#subNavContainer .subNavD2.navSelected {
+	color : #2C91FA;
+}
+
+#subNavContainer .subNavD2.navSelected a {
+	color : #2C91FA;
+}
+
+.subNavD2Container {
+	display : none;
+}
+*/
+h1{
+	margin-top:1px;
+}
+.contentsTitle {
+	border-bottom : 1px solid grey;
+}
+
+table {
+	border-collapse: collapse;
+	border-spacing: 0;
+}
+
+table th {
+	background-color : rgb(232, 232, 232);
+	border : 1px solid grey;
+}
+
+table td {
+	border : 1px solid grey;
+}
+a:visited {
+    color: blue;
+}

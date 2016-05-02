@@ -1,0 +1,318 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+  PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+  "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="menuDAO">
+
+
+	<resultMap type="com.sqisoft.iqs.admin.menu.vo.PhotoVO" id="photoMap">
+		<result property="photoIndex" column="photoIndex"/>
+		<result property="realFileName" column="fl_rl_name"/>
+	</resultMap>
+	
+	<select id="getPhotoList" resultMap="photoMap" parameterType = "map">
+		SELECT		photoIndex
+					,fl_rl_name
+		FROM		photo
+	</select>
+	
+	<select id="getPhotoInfo" parameterType="map" resultMap="photoMap">
+		SELECT		fl_rl_name
+		from		photo
+		WHERE		photoIndex = #{photoIndex}
+	</select>
+	
+	<update id="updatePhoto" parameterType="com.sqisoft.iqs.admin.menu.vo.PhotoVO">
+		update	photo
+		set		fl_rl_name = #{realFileName}
+		where	photoIndex = #{photoIndex}
+	</update>
+	
+	<resultMap type="com.sqisoft.iqs.admin.menu.vo.CategoryVO" id="categoryResultMap">
+		<id		property="id"		column="category_id"/>
+		<result	property="name"		column="category_name"/>
+		<result	property="color"	column="category_color"/>
+	</resultMap>
+	
+	
+	
+	<select id="getCategoryList" resultMap="categoryResultMap">
+		SELECT	*
+		FROM	menu_category
+	</select>
+	
+	<select id="existCategoryName" parameterType="string" resultType="_int">
+		SELECT	COUNT(*)
+		FROM	menu_category
+		WHERE	category_name = #{categoryName}
+	</select>
+	
+	<insert id="insertCategory" parameterType="com.sqisoft.iqs.admin.menu.vo.CategoryVO">
+		INSERT	INTO	menu_category (category_name, category_color)
+		VALUES	(#{name}, #{color})
+	</insert>
+	
+	<select id="getCategoryById" parameterType="_int" resultMap="categoryResultMap">
+		SELECT	*
+		FROM	menu_category
+		WHERE	category_id = #{categoryId}
+	</select>
+	
+	<update id="modifyCategory" parameterType="com.sqisoft.iqs.admin.menu.vo.CategoryVO">
+		UPDATE	menu_category
+		SET		category_name = #{name}
+				, category_color = #{color}
+		WHERE	category_id = #{id}
+	</update>
+	
+	<delete id="deleteCategoryById" parameterType="_int">
+		DELETE
+		FROM	menu_category
+		WHERE	category_id = #{id}
+	</delete>
+	
+	<resultMap type="com.sqisoft.iqs.admin.menu.vo.MenuVO" id="menuResultMap">
+		<id		property="sq"				column="menu_sq"/>
+		<result	property="categoryId"		column="category_id"/>
+		<result	property="categoryName"		column="category_name"/>
+		<result property="categoryColor"	column="category_color"/>
+		<result	property="name"				column="menu_name"/>
+		<result	property="url"				column="menu_url"/>
+	</resultMap>
+	
+	<!-- 관리자 -->
+	<select id="getMenuList" parameterType="map" resultMap="menuResultMap">
+		SELECT	menu_sq
+				, menu.category_id as category_id
+				, category_name
+				, category_color
+				, menu_name
+				, menu_url
+		FROM	menu, menu_category
+		WHERE	menu.category_id = menu_category.category_id
+		<if test="categoryId != 0">
+		AND		menu.category_id = #{categoryId}
+		</if> 
+		ORDER	BY	category_id, menu_sq
+	</select>
+	
+	<!-- 일반 사용자 -->
+	<select id="getNonAdminMenuList" parameterType="map" resultMap="menuResultMap">
+		SELECT	menu_sq
+				, menu.category_id as category_id
+				, category_name
+				, category_color
+				, menu_name
+				, menu_url
+		FROM	menu, menu_category
+		WHERE	menu.category_id = menu_category.category_id
+		AND		menu.category_id != 4
+		AND		menu_url NOT LIKE concat('%','estSignup','%')
+		AND		menu_url NOT LIKE concat('%','estView','%')
+		AND		menu_url NOT LIKE concat('%','humanResource/costmap','%')
+		<if test="categoryId != 0">
+		AND		menu.category_id = #{categoryId}
+		</if> 
+		ORDER	BY	category_id, menu_sq
+	</select>
+	
+	<!--임원 -->
+	<select id="getBoardMemberMenuList" parameterType="map" resultMap="menuResultMap">
+		SELECT	menu_sq
+				, menu.category_id as category_id
+				, category_name
+				, category_color
+				, menu_name
+				, menu_url
+		FROM	menu, menu_category
+		WHERE	menu.category_id = menu_category.category_id
+		AND		menu_url NOT LIKE concat('%','admin/menu','%')
+    	AND		menu_url NOT LIKE concat('%','humanResource/hrPriceMain','%')
+    	AND		menu_url NOT LIKE concat('%','basicInfo/main','%')
+    	AND		menu_url NOT LIKE concat('%','estSignup','%')
+		<if test="categoryId != 0">
+		AND		menu.category_id = #{categoryId}
+		</if> 
+		ORDER	BY	category_id, menu_sq
+	</select>
+	
+	<!--영업 -->
+	<select id="getSalesWomanMenuList" parameterType="map" resultMap="menuResultMap">
+		SELECT	menu_sq
+				, menu.category_id as category_id
+				, category_name
+				, category_color
+				, menu_name
+				, menu_url
+		FROM	menu, menu_category
+		WHERE	menu.category_id = menu_category.category_id
+		AND		menu_url NOT LIKE concat('%','admin/menu','%')
+    	AND		menu_url NOT LIKE concat('%','humanResource/hrPriceMain','%')
+    	AND		menu_url NOT LIKE concat('%','basicInfo/main','%')
+		<if test="categoryId != 0">
+		AND		menu.category_id = #{categoryId}
+		</if> 
+		ORDER	BY	category_id, menu_sq
+	</select>
+	
+	<!--인사 / PM -->
+	<select id="getEstimationViewAndSignupMenuList" parameterType="map" resultMap="menuResultMap">
+		SELECT	menu_sq
+				, menu.category_id as category_id
+				, category_name
+				, category_color
+				, menu_name
+				, menu_url
+		FROM	menu, menu_category
+		WHERE	menu.category_id = menu_category.category_id
+		AND		menu.category_id != 4
+		AND		menu_url NOT LIKE concat('%','humanResource/costmap','%')
+		<if test="categoryId != 0">
+		AND		menu.category_id = #{categoryId}
+		</if> 
+		ORDER	BY	category_id, menu_sq
+	</select>
+	
+	
+	<!--회계 -->
+	<select id="getIncludeAdminMenuList" parameterType="map" resultMap="menuResultMap">
+		SELECT	menu_sq
+				, menu.category_id as category_id
+				, category_name
+				, category_color
+				, menu_name
+				, menu_url
+		FROM	menu, menu_category
+		WHERE	menu.category_id = menu_category.category_id
+		AND		menu_url NOT LIKE concat('%','admin/menu','%')
+    	AND		menu_url NOT LIKE concat('%','humanResource/hrPriceMain','%')
+    	AND		menu_url NOT LIKE concat('%','basicInfo/main','%')
+      	AND		menu_url NOT LIKE concat('%','estView','%')
+      	AND		menu_url NOT LIKE concat('%','estSignup','%')
+		<if test="categoryId != 0">
+		AND		menu.category_id = #{categoryId}
+		</if> 
+		ORDER	BY	category_id, menu_sq
+	</select>
+	
+	<select id="getMaxCategoryMenuSq" parameterType="_int" resultType="_int">
+		SELECT	MAX(menu_sq)
+		FROM	menu
+		WHERE	category_id = #{categoryId}
+	</select>
+	
+	<select id="existMenuNameAjax" parameterType="map" resultType="_int">
+		SELECT	COUNT(*)
+		FROM	menu
+		WHERE	category_id = #{categoryId}
+		AND		menu_name = #{menuName}
+	</select>
+	
+	<select id="existCategoryIdAndMenuSq" parameterType="map" resultType="_int">
+		SELECT	COUNT(*)
+		FROM	menu
+		WHERE	category_id = #{categoryId}
+		AND		menu_sq = #{menuSq}
+	</select>
+	
+	<insert id="insertMenu" parameterType="com.sqisoft.iqs.admin.menu.vo.MenuVO">
+		INSERT	INTO menu
+		VALUES	( #{sq}, #{categoryId}, #{name}, #{url} )
+	</insert>
+	
+	<update id="updateChangeMenuSq" parameterType="map">
+		UPDATE	menu
+		SET		menu_sq = #{maxSq}
+		WHERE	category_id = #{categoryId}
+		AND		menu_sq = #{menuSq}
+	</update>
+	
+	<update id="updateMenu" parameterType="com.sqisoft.iqs.admin.menu.vo.MenuVO">
+		UPDATE	menu
+		SET		category_id = #{categoryId}
+				, menu_sq = #{sq}
+				, menu_name = #{name}
+				, menu_url = #{url}
+		WHERE	category_id = #{originalCategoryId}
+		AND		menu_sq = #{originalSq}
+	</update>
+	
+	<select id="getMenuByMenuSqAndCategoryId" parameterType="map" resultMap="menuResultMap">
+		SELECT	menu_sq
+				, menu.category_id as category_id
+				, category_name
+				, category_color
+				, menu_name
+				, menu_url
+		FROM	menu, menu_category
+		WHERE	menu.category_id = #{categoryId}
+		AND		menu_sq = #{menuSq} 
+		AND		menu_category.category_id = #{categoryId}
+	</select>
+	
+	<delete id="deleteMenu" parameterType="map">
+		DELETE
+		FROM	menu
+		WHERE	category_id = #{categoryId}
+		AND		menu_sq = #{menuSq}
+	</delete>
+	
+	<!-- mymenu -->
+	
+	<resultMap type="com.sqisoft.iqs.admin.menu.vo.MyMenuVO" id="myMenuResultMap">
+		<id		property="email"			column="email"/>
+		<result	property="seq"				column="seq"/>
+		<result	property="categoryId"		column="categoryId"/>
+		<result	property="categoryName"		column="categoryName"/>
+		<result	property="categoryColor"	column="categoryColor"/>
+		<result	property="sq"				column="menuSq"/>
+		<result	property="name"				column="menuName"/>
+		<result property="url"				column="menuUrl"/>
+	</resultMap>
+	
+	<select id="getMyMenuListByEmail" parameterType="string" resultMap="myMenuResultMap">
+		SELECT	email
+				, seq
+				, mymenu.category_id as categoryId
+				, menu_category.category_name as categoryName
+				, menu_category.category_color as categoryColor
+				, menu.menu_sq as menuSq
+				, menu.menu_name as menuName
+				, menu.menu_url as menuUrl
+		FROM	mymenu, menu, menu_category
+		WHERE	email = #{email}
+		AND		mymenu.category_id = menu_category.category_id
+		AND		mymenu.menu_sq = menu.menu_sq
+		AND		menu.category_id = menu_category.category_id
+	</select>
+	
+	<select id="existMyMenu" parameterType="map" resultType="_int">
+		SELECT	COUNT(*)
+		FROM	mymenu
+		WHERE	email = #{email}
+		AND		category_id = #{categoryId}
+		AND		menu_sq = #{menuSq}
+	</select>
+	
+	<insert id="insertMyMenu" parameterType="map">
+		INSERT	INTO mymenu
+		VALUES	(#{email}, #{seq}, #{categoryId}, #{menuSq})
+		ON		DUPLICATE KEY UPDATE category_id = #{categoryId}, menu_sq = #{menuSq}
+	</insert>
+	
+	<delete id="deleteMyMenu" parameterType="map">
+		DELETE
+		FROM	mymenu
+		WHERE	email = #{email}
+		AND		seq = #{seq}
+	</delete>
+	
+	<delete id="deleteMyMenuByUpdateBegin" parameterType="map">
+		DELETE
+		FROM	mymenu
+		WHERE	email = #{email}
+		AND		category_id = #{categoryId}
+		AND		menu_sq = #{menuSq}
+	</delete>
+	
+</mapper>
